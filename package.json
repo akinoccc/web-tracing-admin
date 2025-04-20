@@ -1,0 +1,18 @@
+{
+  "name": "web-tracing-admin",
+  "version": "1.0.0",
+  "description": "Web Tracing SDK 错误监控后台",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "cd frontend && pnpm dev",
+    "dev:backend": "cd backend && go run cmd/main.go",
+    "dev": "concurrently \"pnpm dev:frontend\" \"pnpm dev:backend\"",
+    "build:frontend": "cd frontend && pnpm build",
+    "build:backend": "cd backend && go build -o ../bin/web-tracing-admin ./cmd/main.go",
+    "build": "pnpm build:frontend && pnpm build:backend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "packageManager": "pnpm@9.1.4+sha1.2432063d815cfa88fd9fef1d85a445e3f609851d"
+}

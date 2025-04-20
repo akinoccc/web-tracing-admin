@@ -1,0 +1,1 @@
+{"type":"object","properties":{"counts":{"type":"array","items":{"type":"integer"}},"dates":{"type":"array","items":{"type":"string"}}},"x-readme-ref-name":"service.EventStatsResponse"}

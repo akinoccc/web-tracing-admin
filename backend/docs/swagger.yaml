@@ -1,0 +1,1135 @@
+basePath: /
+definitions:
+  api.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  api.SuccessResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  model.BaseInfo:
+    properties:
+      browser:
+        type: string
+      browserVersion:
+        type: string
+      createdAt:
+        type: string
+      deviceType:
+        type: string
+      id:
+        type: integer
+      ip:
+        type: string
+      os:
+        type: string
+      osVersion:
+        type: string
+      projectId:
+        type: integer
+      screenHeight:
+        type: integer
+      screenWidth:
+        type: integer
+      updatedAt:
+        type: string
+      userAgent:
+        type: string
+      userId:
+        type: string
+    type: object
+  model.ClickEvent:
+    properties:
+      createdAt:
+        type: string
+      elementPath:
+        type: string
+      elementType:
+        type: string
+      event:
+        $ref: '#/definitions/model.Event'
+      eventId:
+        type: integer
+      id:
+        type: integer
+      innerText:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  model.ErrorEvent:
+    properties:
+      columnNumber:
+        type: integer
+      componentName:
+        type: string
+      createdAt:
+        type: string
+      errorMessage:
+        type: string
+      errorStack:
+        type: string
+      errorType:
+        type: string
+      event:
+        $ref: '#/definitions/model.Event'
+      eventId:
+        type: integer
+      filePath:
+        type: string
+      id:
+        type: integer
+      lineNumber:
+        type: integer
+      recordScreen:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  model.Event:
+    properties:
+      baseInfo:
+        $ref: '#/definitions/model.BaseInfo'
+      baseInfoId:
+        type: integer
+      createdAt:
+        type: string
+      eventId:
+        type: string
+      eventType:
+        type: string
+      id:
+        type: integer
+      projectId:
+        type: integer
+      referer:
+        type: string
+      sendTime:
+        type: integer
+      title:
+        type: string
+      triggerPageUrl:
+        type: string
+      triggerTime:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  model.ExposureEvent:
+    properties:
+      createdAt:
+        type: string
+      elementPath:
+        type: string
+      elementType:
+        type: string
+      event:
+        $ref: '#/definitions/model.Event'
+      eventId:
+        type: integer
+      id:
+        type: integer
+      innerText:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  model.PerformanceEvent:
+    properties:
+      createdAt:
+        type: string
+      decodedBodySize:
+        type: integer
+      duration:
+        type: number
+      event:
+        $ref: '#/definitions/model.Event'
+      eventId:
+        type: integer
+      id:
+        type: integer
+      requestUrl:
+        type: string
+      resourceType:
+        type: string
+      responseEnd:
+        type: number
+      responseStatus:
+        type: string
+      transferSize:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  model.Project:
+    properties:
+      appKey:
+        type: string
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/model.User'
+      userId:
+        type: integer
+    type: object
+  model.RequestEvent:
+    properties:
+      createdAt:
+        type: string
+      duration:
+        type: number
+      event:
+        $ref: '#/definitions/model.Event'
+      eventId:
+        type: integer
+      id:
+        type: integer
+      requestMethod:
+        type: string
+      requestParams:
+        type: string
+      requestUrl:
+        type: string
+      responseData:
+        type: string
+      responseStatus:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  model.RouteEvent:
+    properties:
+      action:
+        type: string
+      createdAt:
+        type: string
+      event:
+        $ref: '#/definitions/model.Event'
+      eventId:
+        type: integer
+      id:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  model.User:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      updatedAt:
+        type: string
+      username:
+        type: string
+    type: object
+  service.CreateProjectRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  service.DistributionStatsResponse:
+    properties:
+      labels:
+        items:
+          type: string
+        type: array
+      values:
+        items:
+          type: integer
+        type: array
+    type: object
+  service.EventDetailResponse:
+    properties:
+      click:
+        $ref: '#/definitions/model.ClickEvent'
+      errorEvent:
+        $ref: '#/definitions/model.ErrorEvent'
+      event:
+        $ref: '#/definitions/model.Event'
+      exposure:
+        $ref: '#/definitions/model.ExposureEvent'
+      performance:
+        $ref: '#/definitions/model.PerformanceEvent'
+      request:
+        $ref: '#/definitions/model.RequestEvent'
+      route:
+        $ref: '#/definitions/model.RouteEvent'
+    type: object
+  service.EventListResponse:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/model.Event'
+        type: array
+      total:
+        type: integer
+    type: object
+  service.EventStatsResponse:
+    properties:
+      counts:
+        items:
+          type: integer
+        type: array
+      dates:
+        items:
+          type: string
+        type: array
+    type: object
+  service.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  service.LoginResponse:
+    properties:
+      expireAt:
+        type: integer
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/model.User'
+    type: object
+  service.PerformanceStatsResponse:
+    properties:
+      labels:
+        items:
+          type: string
+        type: array
+      values:
+        items:
+          type: number
+        type: array
+    type: object
+  service.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  service.RequestErrorStatsResponse:
+    properties:
+      counts:
+        items:
+          type: integer
+        type: array
+      statusCodes:
+        items:
+          type: integer
+        type: array
+    type: object
+  service.TrackWebRequest:
+    properties:
+      baseInfo:
+        additionalProperties: true
+        type: object
+      eventInfo:
+        items:
+          additionalProperties: true
+          type: object
+        type: array
+    type: object
+  service.UpdateProjectRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: Web Tracing SDK 错误监控后台 API
+  license:
+    name: MIT
+    url: https://github.com/akinoccc/web-tracing-admin/blob/main/LICENSE
+  termsOfService: http://swagger.io/terms/
+  title: Web Tracing Admin API
+  version: "1.0"
+paths:
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: 用户登录接口
+      parameters:
+      - description: 登录信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/service.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登录成功
+          schema:
+            $ref: '#/definitions/service.LoginResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: 用户登录
+      tags:
+      - 认证
+  /api/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: 用户注册接口
+      parameters:
+      - description: 注册信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/service.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 注册成功
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: 用户注册
+      tags:
+      - 认证
+  /api/events:
+    get:
+      description: 获取项目的事件列表
+      parameters:
+      - description: 项目ID
+        in: query
+        name: projectId
+        required: true
+        type: integer
+      - description: 事件类型
+        in: query
+        name: eventType
+        type: string
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 事件列表
+          schema:
+            $ref: '#/definitions/service.EventListResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取事件列表
+      tags:
+      - 事件
+  /api/events/{id}:
+    get:
+      description: 获取事件详细信息
+      parameters:
+      - description: 事件ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 事件详情
+          schema:
+            $ref: '#/definitions/service.EventDetailResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: 事件不存在
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取事件详情
+      tags:
+      - 事件
+  /api/events/stats:
+    get:
+      description: 获取项目的错误事件统计
+      parameters:
+      - description: 项目ID
+        in: query
+        name: projectId
+        required: true
+        type: integer
+      - description: 开始时间
+        in: query
+        name: startTime
+        required: true
+        type: string
+      - description: 结束时间
+        in: query
+        name: endTime
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 统计数据
+          schema:
+            $ref: '#/definitions/service.EventStatsResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取错误事件统计
+      tags:
+      - 事件
+  /api/events/stats/browser:
+    get:
+      description: 获取项目的错误事件按浏览器分布统计
+      parameters:
+      - description: 项目ID
+        in: query
+        name: projectId
+        required: true
+        type: integer
+      - description: 开始时间
+        in: query
+        name: startTime
+        required: true
+        type: string
+      - description: 结束时间
+        in: query
+        name: endTime
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 统计数据
+          schema:
+            $ref: '#/definitions/service.DistributionStatsResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取错误事件按浏览器分布统计
+      tags:
+      - 事件
+  /api/events/stats/device:
+    get:
+      description: 获取项目的错误事件按设备类型分布统计
+      parameters:
+      - description: 项目ID
+        in: query
+        name: projectId
+        required: true
+        type: integer
+      - description: 开始时间
+        in: query
+        name: startTime
+        required: true
+        type: string
+      - description: 结束时间
+        in: query
+        name: endTime
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 统计数据
+          schema:
+            $ref: '#/definitions/service.DistributionStatsResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取错误事件按设备类型分布统计
+      tags:
+      - 事件
+  /api/events/stats/error-type:
+    get:
+      description: 获取项目的错误事件按错误类型分布统计
+      parameters:
+      - description: 项目ID
+        in: query
+        name: projectId
+        required: true
+        type: integer
+      - description: 开始时间
+        in: query
+        name: startTime
+        required: true
+        type: string
+      - description: 结束时间
+        in: query
+        name: endTime
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 统计数据
+          schema:
+            $ref: '#/definitions/service.DistributionStatsResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取错误事件按错误类型分布统计
+      tags:
+      - 事件
+  /api/events/stats/os:
+    get:
+      description: 获取项目的错误事件按操作系统分布统计
+      parameters:
+      - description: 项目ID
+        in: query
+        name: projectId
+        required: true
+        type: integer
+      - description: 开始时间
+        in: query
+        name: startTime
+        required: true
+        type: string
+      - description: 结束时间
+        in: query
+        name: endTime
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 统计数据
+          schema:
+            $ref: '#/definitions/service.DistributionStatsResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取错误事件按操作系统分布统计
+      tags:
+      - 事件
+  /api/events/stats/performance:
+    get:
+      description: 获取项目的性能指标统计
+      parameters:
+      - description: 项目ID
+        in: query
+        name: projectId
+        required: true
+        type: integer
+      - description: 开始时间
+        in: query
+        name: startTime
+        required: true
+        type: string
+      - description: 结束时间
+        in: query
+        name: endTime
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 统计数据
+          schema:
+            $ref: '#/definitions/service.PerformanceStatsResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取性能指标统计
+      tags:
+      - 事件
+  /api/events/stats/request-error:
+    get:
+      description: 获取项目的请求错误统计
+      parameters:
+      - description: 项目ID
+        in: query
+        name: projectId
+        required: true
+        type: integer
+      - description: 开始时间
+        in: query
+        name: startTime
+        required: true
+        type: string
+      - description: 结束时间
+        in: query
+        name: endTime
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 统计数据
+          schema:
+            $ref: '#/definitions/service.RequestErrorStatsResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取请求错误统计
+      tags:
+      - 事件
+  /api/projects:
+    get:
+      description: 获取当前用户的所有项目
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 项目列表
+          schema:
+            items:
+              $ref: '#/definitions/model.Project'
+            type: array
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取项目列表
+      tags:
+      - 项目
+    post:
+      consumes:
+      - application/json
+      description: 创建新项目
+      parameters:
+      - description: 项目信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/service.CreateProjectRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功
+          schema:
+            $ref: '#/definitions/model.Project'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建项目
+      tags:
+      - 项目
+  /api/projects/{id}:
+    delete:
+      description: 删除项目
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除成功
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: 项目不存在
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除项目
+      tags:
+      - 项目
+    get:
+      description: 获取项目详细信息
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 项目详情
+          schema:
+            $ref: '#/definitions/model.Project'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: 项目不存在
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取项目详情
+      tags:
+      - 项目
+    put:
+      consumes:
+      - application/json
+      description: 更新项目信息
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 项目信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/service.UpdateProjectRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功
+          schema:
+            $ref: '#/definitions/model.Project'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: 项目不存在
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 更新项目
+      tags:
+      - 项目
+  /cleanTracingList:
+    post:
+      description: 清除所有跟踪数据
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 清除成功
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: 清除所有跟踪数据
+      tags:
+      - 跟踪
+  /getAllTracingList:
+    get:
+      description: 获取所有跟踪数据
+      parameters:
+      - description: 事件类型
+        in: query
+        name: eventType
+        type: string
+      - description: 开始时间，格式：2006-01-02
+        in: query
+        name: startTime
+        type: string
+      - description: 结束时间，格式：2006-01-02
+        in: query
+        name: endTime
+        type: string
+      - description: 关键字搜索
+        in: query
+        name: keyword
+        type: string
+      - description: 浏览器类型
+        in: query
+        name: browser
+        type: string
+      - description: 操作系统
+        in: query
+        name: os
+        type: string
+      - description: 设备类型
+        in: query
+        name: deviceType
+        type: string
+      - description: 错误类型，仅当 eventType=error 时有效
+        in: query
+        name: errorType
+        type: string
+      - description: 响应状态码，仅当 eventType=request 时有效
+        in: query
+        name: responseStatus
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: 获取所有跟踪数据
+      tags:
+      - 跟踪
+  /getBaseInfo:
+    get:
+      description: 获取基础信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: 获取基础信息
+      tags:
+      - 跟踪
+  /trackweb:
+    post:
+      consumes:
+      - application/json
+      description: SDK 上报跟踪数据接口
+      parameters:
+      - description: 应用密钥
+        in: query
+        name: app_key
+        required: true
+        type: string
+      - description: 跟踪数据
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/service.TrackWebRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 上报成功
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: 上报跟踪数据
+      tags:
+      - 跟踪
+schemes:
+- http
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

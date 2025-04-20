@@ -1,0 +1,1 @@
+{"type":"object","required":["name"],"properties":{"description":{"type":"string"},"name":{"type":"string"}},"x-readme-ref-name":"service.CreateProjectRequest"}
