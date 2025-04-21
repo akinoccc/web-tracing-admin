@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/go-ini/ini"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
@@ -61,19 +61,19 @@ func Setup() {
 		log.Fatalf("Failed to map server section: %v", err)
 	}
 
-	// 先连接到 MySQL 服务器，不指定数据库
+	// 先连接到 PostgreSQL 服务器，不指定数据库
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/?charset=utf8mb4&parseTime=True&loc=Local",
 		DatabaseSetting.User,
 		DatabaseSetting.Password,
 		DatabaseSetting.Host)
 
-	tempDB, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	tempDB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatalf("Failed to connect to MySQL server: %v", err)
+		log.Fatalf("Failed to connect to PostgreSQL server: %v", err)
 	}
 
 	// 创建数据库（如果不存在）
-	sql := fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;", DatabaseSetting.Name)
+	sql := fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s;", DatabaseSetting.Name)
 	err = tempDB.Exec(sql).Error
 	if err != nil {
 		log.Fatalf("Failed to create database: %v", err)
@@ -86,7 +86,7 @@ func Setup() {
 		DatabaseSetting.Host,
 		DatabaseSetting.Name)
 
-	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 		NamingStrategy: schema.NamingStrategy{
 			TablePrefix:   DatabaseSetting.TablePrefix,
@@ -109,19 +109,20 @@ func Setup() {
 	}
 
 	// 创建 Event 表
-	err = db.AutoMigrate(&Event{})
+	err = db.AutoMigrate(&EventMain{})
 	if err != nil {
 		log.Fatalf("Failed to migrate Event table: %v", err)
 	}
 
 	// 创建各种事件表
 	err = db.AutoMigrate(
-		&ErrorEvent{},
-		&PerformanceEvent{},
-		&RequestEvent{},
-		&ClickEvent{},
-		&RouteEvent{},
-		&ExposureEvent{},
+		&PerformancePageDetail{},
+		&PerformanceResourceDetail{},
+		&PVDetail{},
+		&ClickDetail{},
+		&DwellDetail{},
+		&IntersectionDetail{},
+		&CustomDetail{},
 	)
 	if err != nil {
 		log.Fatalf("Failed to migrate event tables: %v", err)

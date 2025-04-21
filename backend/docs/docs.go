@@ -1191,16 +1191,37 @@ const docTemplate = `{
         "model.BaseInfo": {
             "type": "object",
             "properties": {
+                "appCode": {
+                    "type": "string"
+                },
+                "appName": {
+                    "type": "string"
+                },
                 "browser": {
                     "type": "string"
                 },
                 "browserVersion": {
                     "type": "string"
                 },
+                "clientHeight": {
+                    "type": "integer"
+                },
+                "clientWidth": {
+                    "type": "integer"
+                },
+                "colorDepth": {
+                    "type": "integer"
+                },
                 "createdAt": {
                     "type": "string"
                 },
+                "deviceId": {
+                    "type": "string"
+                },
                 "deviceType": {
+                    "type": "string"
+                },
+                "ext": {
                     "type": "string"
                 },
                 "id": {
@@ -1215,6 +1236,15 @@ const docTemplate = `{
                 "osVersion": {
                     "type": "string"
                 },
+                "pageId": {
+                    "type": "string"
+                },
+                "pixelDepth": {
+                    "type": "integer"
+                },
+                "platform": {
+                    "type": "string"
+                },
                 "projectId": {
                     "type": "integer"
                 },
@@ -1224,6 +1254,18 @@ const docTemplate = `{
                 "screenWidth": {
                     "type": "integer"
                 },
+                "sdkUserUuid": {
+                    "type": "string"
+                },
+                "sdkVersion": {
+                    "type": "string"
+                },
+                "sendTime": {
+                    "type": "integer"
+                },
+                "sessionId": {
+                    "type": "string"
+                },
                 "updatedAt": {
                     "type": "string"
                 },
@@ -1231,6 +1273,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "userId": {
+                    "type": "string"
+                },
+                "userUuid": {
+                    "type": "string"
+                },
+                "vendor": {
                     "type": "string"
                 }
             }
@@ -1384,14 +1432,32 @@ const docTemplate = `{
         "model.PerformanceEvent": {
             "type": "object",
             "properties": {
+                "connectEnd": {
+                    "type": "number"
+                },
+                "connectStart": {
+                    "type": "number"
+                },
                 "createdAt": {
                     "type": "string"
                 },
                 "decodedBodySize": {
                     "type": "integer"
                 },
+                "dom": {
+                    "type": "number"
+                },
+                "domainLookupEnd": {
+                    "type": "number"
+                },
+                "domainLookupStart": {
+                    "type": "number"
+                },
                 "duration": {
                     "type": "number"
+                },
+                "encodedBodySize": {
+                    "type": "integer"
                 },
                 "event": {
                     "$ref": "#/definitions/model.Event"
@@ -1399,11 +1465,33 @@ const docTemplate = `{
                 "eventId": {
                     "type": "integer"
                 },
+                "fetchStart": {
+                    "type": "number"
+                },
+                "firstbyte": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "integer"
                 },
+                "initiatorType": {
+                    "description": "资源性能指标",
+                    "type": "string"
+                },
+                "loadon": {
+                    "type": "number"
+                },
+                "ready": {
+                    "type": "number"
+                },
+                "requestStart": {
+                    "type": "number"
+                },
                 "requestUrl": {
                     "type": "string"
+                },
+                "res": {
+                    "type": "number"
                 },
                 "resourceType": {
                     "type": "string"
@@ -1411,11 +1499,30 @@ const docTemplate = `{
                 "responseEnd": {
                     "type": "number"
                 },
+                "responseStart": {
+                    "type": "number"
+                },
                 "responseStatus": {
                     "type": "string"
                 },
+                "ssllink": {
+                    "type": "number"
+                },
+                "startTime": {
+                    "type": "number"
+                },
+                "trans": {
+                    "type": "number"
+                },
                 "transferSize": {
                     "type": "integer"
+                },
+                "ttfb": {
+                    "type": "number"
+                },
+                "tti": {
+                    "description": "页面性能指标",
+                    "type": "number"
                 },
                 "updatedAt": {
                     "type": "string"
@@ -1752,6 +1859,8 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "Web Tracing SDK 错误监控后台 API",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
+	LeftDelim:        "{{",
+	RightDelim:       "}}",
 }
 
 func init() {

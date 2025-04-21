@@ -1,1 +1,0 @@
-{"type":"object","properties":{"counts":{"type":"array","items":{"type":"integer"}},"statusCodes":{"type":"array","items":{"type":"integer"}}},"x-readme-ref-name":"service.RequestErrorStatsResponse"}

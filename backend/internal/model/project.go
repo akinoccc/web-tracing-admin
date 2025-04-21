@@ -3,6 +3,7 @@ package model
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 	"time"
 )
 
@@ -22,6 +23,8 @@ func CreateProject(name, description string, userID uint) (*Project, error) {
 	h := md5.New()
 	h.Write([]byte(name + time.Now().String()))
 	appKey := hex.EncodeToString(h.Sum(nil))
+
+	fmt.Println("appKey", appKey)
 
 	project := Project{
 		Name:        name,
@@ -59,6 +62,15 @@ func GetProjectByID(id uint) (*Project, error) {
 func GetProjectByAppKey(appKey string) (*Project, error) {
 	var project Project
 	if err := db.Where("app_key = ?", appKey).First(&project).Error; err != nil {
+		return nil, err
+	}
+	return &project, nil
+}
+
+// 通过项目名称获取项目
+func GetProjectByName(name string) (*Project, error) {
+	var project Project
+	if err := db.Where("name = ?", name).First(&project).Error; err != nil {
 		return nil, err
 	}
 	return &project, nil

@@ -1,0 +1,43 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+- 项目说明：
+这是一个 web-tracing-sdk的一个错误监控后台，sdk通过 /trackweb 接口上报错误信息。该后台需要实现针对相关错误信息的分析与整理
+
+- 技术选型：
+  - 后端：golang, gin，gorm, air,goswagger2，配置使用 ini 文件
+  - 前端：typescript, vue3，shadcn-vue, tailwindcss v4, vite，kubb，pnpm
+  - 数据库：mysql
+  - 版本说明：使用上述技术的最新版本
+
+- 文档参考：
+  - gin: https://gin-gonic.com/en/docs
+  - gorm: https://gorm.io/docs/
+  - air: https://github.com/cosmtrek/air
+  - vue3: https://vuejs.org/guide/
+  - shadcn-vue: https://www.shadcn-vue.com/docs/
+  - tailwindcss v4: https://tailwindcss.com/docs
+  - vite: https://vitejs.dev/guide/
+  - web-tracing: https://github.com/M-cheng-web/web-tracing
+  - kubb: https://kubb.dev/
+
+- 代码风格：
+  - 普通变量使用小驼峰命名法
+  - 前端多使用函数式composable的写法
+  - css尽量使用tailwindcss
+  - 数据库字段使用下划线命名法
+  - 接口json字段使用小驼峰命名法（不能使用下划线命名法）
+  - 后端所有接口需要标志swagger，前端接口类型通过kubb生成
+  - 代码可读性，可维护性强
+  - 简洁，优雅
+
+- UI设计:
+  - 颜色搭配合理，舒适
+  - 风格现代化
+  - 交互友好
+  - 适配移动端和pc端
+
+- 部署：
+  - 需要支撑 docker 部署

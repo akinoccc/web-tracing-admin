@@ -100,9 +100,9 @@
                 v-model="filterType"
                 class="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
-                <option value="all">所有类型</option>
-                <option value="click">点击事件</option>
-                <option value="intersection">曝光事件</option>
+                <option v-for="eventType in eventTypes" :key="eventType.value" :value="eventType.value">
+                  {{ eventType.label }}
+                </option>
               </select>
             </div>
 
@@ -114,55 +114,77 @@
               暂无事件数据
             </div>
 
-            <div v-else class="border rounded-md">
-              <div class="grid grid-cols-12 gap-4 p-4 font-medium border-b">
-                <div class="col-span-2">事件类型</div>
-                <div class="col-span-3">元素路径</div>
-                <div class="col-span-3">元素内容</div>
-                <div class="col-span-2">页面 URL</div>
-                <div class="col-span-2">时间</div>
-              </div>
-              <div
-                v-for="event in filteredEvents"
-                :key="event.id"
-                class="grid grid-cols-12 gap-4 p-4 border-b last:border-0 hover:bg-muted/50"
-              >
-                <div class="col-span-2">{{ event.type === 'click' ? '点击事件' : '曝光事件' }}</div>
-                <div class="col-span-3 truncate" :title="event.elementPath">
-                  {{ event.elementPath }}
-                </div>
-                <div class="col-span-3 truncate" :title="event.innerText">
-                  {{ event.innerText || '无内容' }}
-                </div>
-                <div class="col-span-2 truncate" :title="event.pageUrl">
-                  {{ event.pageUrl }}
-                </div>
-                <div class="col-span-2">{{ formatDate(event.time) }}</div>
-              </div>
-            </div>
+            <div v-else>
+              <Table>
+                <TableCaption>事件列表</TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>ID</TableHead>
+                    <TableHead>事件ID</TableHead>
+                    <TableHead>事件类型</TableHead>
+                    <TableHead>标题</TableHead>
+                    <TableHead>页面URL</TableHead>
+                    <TableHead>Referer</TableHead>
+                    <TableHead>浏览器</TableHead>
+                    <TableHead>设备类型</TableHead>
+                    <TableHead>操作系统</TableHead>
+                    <TableHead>触发时间</TableHead>
+                    <TableHead>创建时间</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow 
+                    v-for="event in filteredEvents" 
+                    :key="event.id" 
+                    class="hover:bg-muted/50"
+                  >
+                    <TableCell>{{ event.id || '-' }}</TableCell>
+                    <TableCell>{{ event.eventId || '-' }}</TableCell>
+                    <TableCell>{{ eventTypes.find(type => type.value === event.eventType)?.label || '未知' }}</TableCell>
+                    <TableCell class="max-w-[150px] truncate" :title="event.title || ''">
+                      {{ event.title || '-' }}
+                    </TableCell>
+                    <TableCell class="max-w-[200px] truncate" :title="event.triggerPageUrl || ''">
+                      {{ event.triggerPageUrl || '-' }}
+                    </TableCell>
+                    <TableCell class="max-w-[150px] truncate" :title="event.referer || ''">
+                      {{ event.referer || '-' }}
+                    </TableCell>
+                    <TableCell>
+                      {{ event.baseInfo?.browser || '-' }}
+                      {{ event.baseInfo?.browserVersion ? `(${event.baseInfo.browserVersion})` : '' }}
+                    </TableCell>
+                    <TableCell>{{ event.baseInfo?.deviceType || '-' }}</TableCell>
+                    <TableCell>{{ event.baseInfo?.os || '-' }}</TableCell>
+                    <TableCell>{{ event.triggerTime ? formatTimestamp(event.triggerTime) : '-' }}</TableCell>
+                    <TableCell>{{ formatDate(event.createdAt || '') }}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
 
-            <!-- 分页 -->
-            <div class="flex items-center justify-between">
-              <div class="text-sm text-muted-foreground">
-                显示 {{ (currentPage - 1) * pageSize + 1 }} - {{ Math.min(currentPage * pageSize, totalEvents) }} 条，共 {{ totalEvents }} 条
-              </div>
-              <div class="flex items-center space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  :disabled="currentPage === 1"
-                  @click="currentPage--"
-                >
-                  上一页
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  :disabled="currentPage * pageSize >= totalEvents"
-                  @click="currentPage++"
-                >
-                  下一页
-                </Button>
+              <!-- 分页 -->
+              <div class="flex items-center justify-between mt-4">
+                <div class="text-sm text-muted-foreground">
+                  显示 {{ (currentPage - 1) * pageSize + 1 }} - {{ Math.min(currentPage * pageSize, totalEvents) }} 条，共 {{ totalEvents }} 条
+                </div>
+                <div class="flex items-center space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    :disabled="currentPage === 1"
+                    @click="currentPage--"
+                  >
+                    上一页
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    :disabled="currentPage * pageSize >= totalEvents"
+                    @click="currentPage++"
+                  >
+                    下一页
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -181,10 +203,31 @@ import { useEventService } from '@/services'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { 
+  Table, 
+  TableBody, 
+  TableCaption, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from '@/components/ui/table'
+import { ModelEvent } from '@/types'
 
 const router = useRouter()
 const projectStore = useProjectStore()
 const eventService = useEventService()
+
+const eventTypes = [
+  { label: '所有类型', value: 'all' },
+  { label: '点击事件', value: 'click' },
+  { label: '曝光事件', value: 'intersection' },
+  { label: 'PV事件', value: 'pv' },
+  { label: 'PV时长事件', value: 'pv-duration' },
+  { label: '错误事件', value: 'error' },
+  { label: '性能事件', value: 'performance' },
+  { label: '请求错误事件', value: 'request' }
+]
 
 // 统计数据
 const stats = reactive({
@@ -199,7 +242,7 @@ const stats = reactive({
 })
 
 // 事件列表
-const events = ref<any[]>([])
+const events = ref<ModelEvent[]>([])
 const loading = ref(false)
 const searchQuery = ref('')
 const filterType = ref('all')
@@ -215,15 +258,18 @@ const filteredEvents = computed(() => {
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
     result = result.filter(event =>
-      (event.elementPath && event.elementPath.toLowerCase().includes(query)) ||
-      (event.innerText && event.innerText.toLowerCase().includes(query)) ||
-      (event.pageUrl && event.pageUrl.toLowerCase().includes(query))
+      (event.triggerPageUrl && event.triggerPageUrl.toLowerCase().includes(query)) ||
+      (event.title && event.title.toLowerCase().includes(query)) ||
+      (event.eventType && event.eventType.toLowerCase().includes(query)) ||
+      (event.baseInfo?.browser && event.baseInfo.browser.toLowerCase().includes(query)) ||
+      (event.baseInfo?.os && event.baseInfo.os.toLowerCase().includes(query)) ||
+      (event.baseInfo?.deviceType && event.baseInfo.deviceType.toLowerCase().includes(query))
     )
   }
 
   // 类型过滤
   if (filterType.value !== 'all') {
-    result = result.filter(event => event.type === filterType.value)
+    result = result.filter(event => event.eventType === filterType.value)
   }
 
   return result
@@ -231,18 +277,30 @@ const filteredEvents = computed(() => {
 
 // 格式化日期
 const formatDate = (dateString: string) => {
+  if (!dateString) return '-'
   try {
     const date = new Date(dateString)
-    return format(date, 'yyyy-MM-dd HH:mm')
+    return format(date, 'yyyy-MM-dd HH:mm:ss')
   } catch (e) {
     return dateString
+  }
+}
+
+// 格式化时间戳
+const formatTimestamp = (timestamp: number) => {
+  try {
+    const date = new Date(timestamp)
+    return format(date, 'yyyy-MM-dd HH:mm:ss')
+  } catch (e) {
+    return `${timestamp}`
   }
 }
 
 // 刷新数据
 const refreshData = () => {
   fetchEvents()
-  fetchStats()
+  // 暂时注释掉统计数据的获取，API 响应格式不匹配
+  // fetchStats()
 }
 
 // 获取事件列表
@@ -259,23 +317,11 @@ const fetchEvents = async () => {
       pageSize: pageSize.value
     })
 
-    events.value = response.data.items.map((item: any) => {
-      const clickEvent = item.clickEvent || {}
-      const exposureEvent = item.exposureEvent || {}
-      const isClick = !!clickEvent.id
-      const event = isClick ? clickEvent : exposureEvent
+    console.log(response.data)
 
-      return {
-        id: item.id,
-        type: isClick ? 'click' : 'intersection',
-        elementPath: event.elementPath || '',
-        innerText: event.innerText || '',
-        pageUrl: item.event?.pageUrl || '',
-        time: item.createdAt
-      }
-    })
+    events.value = response.data?.list ?? []
 
-    totalEvents.value = response.data.total
+    totalEvents.value = response.data?.total ?? 0
   } catch (error) {
     console.error('Failed to fetch events:', error)
   } finally {
@@ -283,7 +329,8 @@ const fetchEvents = async () => {
   }
 }
 
-// 获取统计数据
+// 获取统计数据 - 暂时注释掉，API 响应格式不匹配
+/*
 const fetchStats = async () => {
   if (!projectStore.currentProject) return
 
@@ -296,37 +343,33 @@ const fetchStats = async () => {
     const startTime = format(oneWeekAgo, 'yyyy-MM-dd')
     const endTime = format(now, 'yyyy-MM-dd')
 
-    // 获取点击和曝光事件的统计数据
+    // 获取点击和曝光事件的统计数据 - 需要等待接口文档更新
     const clickResponse = await eventService.getEventStats({
       projectId: projectStore.currentProject.id,
       startTime,
-      endTime,
-      eventType: 'click'
+      endTime
     })
 
     const exposureResponse = await eventService.getEventStats({
       projectId: projectStore.currentProject.id,
       startTime,
-      endTime,
-      eventType: 'exposure'
+      endTime
     })
 
-    const clickData = clickResponse.data
-    const exposureData = exposureResponse.data
-
-    stats.todayClicks = clickData.todayCount || 0
-    stats.todayClicksTrend = clickData.todayTrend || 0
-    stats.weekClicks = clickData.weekCount || 0
-    stats.weekClicksTrend = clickData.weekTrend || 0
-
-    stats.todayExposures = exposureData.todayCount || 0
-    stats.todayExposuresTrend = exposureData.todayTrend || 0
-    stats.weekExposures = exposureData.weekCount || 0
-    stats.weekExposuresTrend = exposureData.weekTrend || 0
+    // 临时使用，等待接口文档更新
+    stats.todayClicks = 0
+    stats.todayClicksTrend = 0
+    stats.weekClicks = 0
+    stats.weekClicksTrend = 0
+    stats.todayExposures = 0
+    stats.todayExposuresTrend = 0
+    stats.weekExposures = 0
+    stats.weekExposuresTrend = 0
   } catch (error) {
     console.error('Failed to fetch stats:', error)
   }
 }
+*/
 
 // 监听项目变化
 watch(() => projectStore.currentProject, (newProject) => {

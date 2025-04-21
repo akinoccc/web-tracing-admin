@@ -61,15 +61,6 @@ func registerRoutes(r *gin.Engine) {
 	r.POST("/api/auth/login", api.Login)
 	r.POST("/api/auth/register", api.Register)
 
-	// 跟踪数据上报路由
-	r.POST("/trackweb", api.TrackWeb)
-	r.GET("/trackweb", api.TrackWeb)
-
-	// 兼容示例项目的路由
-	r.GET("/getAllTracingList", api.GetAllTracingList)
-	r.POST("/cleanTracingList", api.CleanTracingList)
-	r.GET("/getBaseInfo", api.GetBaseInfo)
-
 	// 需要认证的路由
 	apiGroup := r.Group("/api")
 	apiGroup.Use(middleware.JWT())
@@ -80,18 +71,5 @@ func registerRoutes(r *gin.Engine) {
 		apiGroup.GET("/projects/:id", api.GetProject)
 		apiGroup.PUT("/projects/:id", api.UpdateProject)
 		apiGroup.DELETE("/projects/:id", api.DeleteProject)
-
-		// 事件路由
-		apiGroup.GET("/events", api.GetEvents)
-		apiGroup.GET("/events/:id", api.GetEventDetail)
-
-		// 统计路由
-		apiGroup.GET("/events/stats", api.GetErrorStats)
-		apiGroup.GET("/events/stats/browser", api.GetErrorByBrowserStats)
-		apiGroup.GET("/events/stats/os", api.GetErrorByOSStats)
-		apiGroup.GET("/events/stats/device", api.GetErrorByDeviceStats)
-		apiGroup.GET("/events/stats/error-type", api.GetErrorByTypeStats)
-		apiGroup.GET("/events/stats/performance", api.GetPerformanceStats)
-		apiGroup.GET("/events/stats/request-error", api.GetRequestErrorStats)
 	}
 }

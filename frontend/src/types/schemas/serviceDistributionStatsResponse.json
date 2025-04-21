@@ -1,1 +1,0 @@
-{"type":"object","properties":{"labels":{"type":"array","items":{"type":"string"}},"values":{"type":"array","items":{"type":"integer"}}},"x-readme-ref-name":"service.DistributionStatsResponse"}

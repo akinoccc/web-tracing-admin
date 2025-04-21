@@ -52,23 +52,23 @@ export function useApi() {
   )
   
   // 封装 GET 请求
-  const get = (url: string, params?: any, config?: AxiosRequestConfig) => {
-    return api.get(url, { params, ...config })
+  const get = <T>(url: string, params?: any, config?: AxiosRequestConfig) => {
+    return api.get<T>(url, { params, ...config })
   }
   
   // 封装 POST 请求
-  const post = (url: string, data?: any, config?: AxiosRequestConfig) => {
-    return api.post(url, data, config)
+  const post = <T>(url: string, data?: any, config?: AxiosRequestConfig) => {
+    return api.post<T>(url, data, config)
   }
   
   // 封装 PUT 请求
-  const put = (url: string, data?: any, config?: AxiosRequestConfig) => {
-    return api.put(url, data, config)
+  const put = <T>(url: string, data?: any, config?: AxiosRequestConfig) => {
+    return api.put<T>(url, data, config)
   }
   
   // 封装 DELETE 请求
-  const del = (url: string, config?: AxiosRequestConfig) => {
-    return api.delete(url, config)
+  const del = <T>(url: string, config?: AxiosRequestConfig) => {
+    return api.delete<T>(url, config)
   }
   
   return {

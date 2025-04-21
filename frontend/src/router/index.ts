@@ -25,7 +25,10 @@ const router = createRouter({
           path: 'errors/:id',
           name: 'error-detail',
           component: () => import('@/pages/errors/detail.vue'),
-          meta: { title: '错误详情' }
+          meta: {
+            title: '错误详情',
+            hiddenInSidebar: true
+          }
         },
         {
           path: 'performance',
@@ -58,10 +61,16 @@ const router = createRouter({
           meta: { title: '事件监控' }
         },
         {
-          path: 'settings',
-          name: 'settings',
-          component: () => import('@/pages/settings/index.vue'),
-          meta: { title: '设置' }
+          path: 'projects',
+          name: 'projects',
+          component: () => import('@/pages/projects/index.vue'),
+          meta: { title: '项目管理' }
+        },
+        {
+          path: 'projects/:id/settings',
+          name: 'project-settings',
+          component: () => import('@/pages/projects/detail.vue'),
+          meta: { title: '项目设置', hiddenInSidebar: true }
         }
       ]
     },

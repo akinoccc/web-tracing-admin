@@ -1,7 +1,8 @@
 <template>
   <router-view />
+  <Toaster position="top-right" richColors closeButton />
 </template>
 
 <script setup lang="ts">
-// App.vue 是应用的根组件
+import { Toaster } from '@/components/ui/sonner'
 </script>
