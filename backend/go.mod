@@ -2,7 +2,7 @@ module github.com/akinoccc/web-tracing-admin
 
 go 1.22.4
 
-require gorm.io/datatypes v1.2.5
+require gorm.io/datatypes v1.2.0
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
@@ -64,7 +64,7 @@ require (
 	google.golang.org/protobuf v1.34.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gorm.io/driver/mysql v1.5.7 // indirect
-	gorm.io/driver/postgres v1.5.11 // indirect
+	gorm.io/driver/mysql v1.5.2 // indirect
+	gorm.io/driver/postgres v1.5.4 // indirect
 	gorm.io/gorm v1.25.12 // indirect
 )

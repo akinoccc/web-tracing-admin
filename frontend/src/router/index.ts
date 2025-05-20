@@ -1,102 +1,85 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
+// 布局组件
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import AuthLayout from '@/layouts/AuthLayout.vue'
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
       path: '/',
-      component: () => import('@/layouts/DefaultLayout.vue'),
+      component: DefaultLayout,
       meta: { requiresAuth: true },
       children: [
         {
           path: '',
           name: 'dashboard',
-          component: () => import('@/pages/dashboard/index.vue'),
-          meta: { title: '仪表盘' }
+          component: () => import('@/pages/DashboardPage.vue'),
+          meta: { title: '仪表盘', requiresAuth: true }
         },
         {
           path: 'errors',
           name: 'errors',
-          component: () => import('@/pages/errors/index.vue'),
-          meta: { title: '错误监控' }
+          component: () => import('@/pages/ErrorsPage.vue'),
+          meta: { title: '错误监控', requiresAuth: true }
         },
         {
           path: 'errors/:id',
           name: 'error-detail',
-          component: () => import('@/pages/errors/detail.vue'),
-          meta: {
-            title: '错误详情',
-            hiddenInSidebar: true
-          }
+          component: () => import('@/pages/ErrorDetailPage.vue'),
+          meta: { title: '错误详情', requiresAuth: true, hiddenInSidebar: true }
         },
         {
           path: 'performance',
           name: 'performance',
-          component: () => import('@/pages/performance/index.vue'),
-          meta: { title: '性能监控' }
+          component: () => import('@/pages/PerformancePage.vue'),
+          meta: { title: '性能监控', requiresAuth: true }
         },
         {
-          path: 'requests',
-          name: 'requests',
-          component: () => import('@/pages/requests/index.vue'),
-          meta: { title: '请求监控' }
-        },
-        {
-          path: 'resources',
-          name: 'resources',
-          component: () => import('@/pages/resources/index.vue'),
-          meta: { title: '资源监控' }
-        },
-        {
-          path: 'routes',
-          name: 'routes',
-          component: () => import('@/pages/routes/index.vue'),
-          meta: { title: '路由监控' }
-        },
-        {
-          path: 'events',
-          name: 'events',
-          component: () => import('@/pages/events/index.vue'),
-          meta: { title: '事件监控' }
+          path: 'behavior',
+          name: 'behavior',
+          component: () => import('@/pages/BehaviorPage.vue'),
+          meta: { title: '用户行为', requiresAuth: true }
         },
         {
           path: 'projects',
           name: 'projects',
-          component: () => import('@/pages/projects/index.vue'),
-          meta: { title: '项目管理' }
+          component: () => import('@/pages/ProjectsPage.vue'),
+          meta: { title: '项目管理', requiresAuth: true }
         },
         {
-          path: 'projects/:id/settings',
-          name: 'project-settings',
-          component: () => import('@/pages/projects/detail.vue'),
-          meta: { title: '项目设置', hiddenInSidebar: true }
+          path: 'settings',
+          name: 'settings',
+          component: () => import('@/pages/SettingsPage.vue'),
+          meta: { title: '设置', requiresAuth: true }
         }
       ]
     },
     {
       path: '/auth',
-      component: () => import('@/layouts/AuthLayout.vue'),
+      component: AuthLayout,
       meta: { requiresAuth: false },
       children: [
         {
           path: 'login',
           name: 'login',
-          component: () => import('@/pages/auth/login.vue'),
-          meta: { title: '登录' }
+          component: () => import('@/pages/LoginPage.vue'),
+          meta: { title: '登录', requiresAuth: false }
         },
         {
           path: 'register',
           name: 'register',
-          component: () => import('@/pages/auth/register.vue'),
-          meta: { title: '注册' }
+          component: () => import('@/pages/RegisterPage.vue'),
+          meta: { title: '注册', requiresAuth: false }
         }
       ]
     },
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
-      component: () => import('@/pages/error/404.vue'),
+      component: () => import('@/pages/NotFoundPage.vue'),
       meta: { title: '页面不存在' }
     }
   ]
@@ -112,7 +95,7 @@ router.beforeEach((to, from, next) => {
 
   if (requiresAuth && !authStore.isAuthenticated) {
     next({ name: 'login' })
-  } else if (!requiresAuth && authStore.isAuthenticated) {
+  } else if (to.path === '/auth/login' && authStore.isAuthenticated) {
     next({ name: 'dashboard' })
   } else {
     next()

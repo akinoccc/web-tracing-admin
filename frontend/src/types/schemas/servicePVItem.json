@@ -1,0 +1,1 @@
+{"type":"object","properties":{"browser":{"type":"string"},"device":{"type":"string"},"eventId":{"type":"string"},"id":{"type":"integer"},"isNewVisit":{"type":"boolean"},"os":{"type":"string"},"pageUrl":{"type":"string"},"referrer":{"type":"string"},"stayTime":{"type":"integer"},"title":{"type":"string"},"triggerTime":{"type":"integer"}},"x-readme-ref-name":"service.PVItem"}

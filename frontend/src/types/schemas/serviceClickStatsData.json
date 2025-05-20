@@ -1,0 +1,1 @@
+{"type":"object","properties":{"clicksToday":{"type":"integer"},"topElements":{"type":"object","additionalProperties":{"type":"integer"}},"totalClicks":{"type":"integer"}},"x-readme-ref-name":"service.ClickStatsData"}

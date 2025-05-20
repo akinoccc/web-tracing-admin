@@ -1,0 +1,1 @@
+{"type":"object","properties":{"date":{"type":"string"},"fcp":{"type":"integer"},"fp":{"type":"integer"},"lcp":{"type":"integer"},"ttfb":{"type":"integer"}},"x-readme-ref-name":"service.PerformanceTrendItem"}

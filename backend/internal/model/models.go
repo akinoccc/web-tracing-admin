@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/go-ini/ini"
+	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -61,32 +62,84 @@ func Setup() {
 		log.Fatalf("Failed to map server section: %v", err)
 	}
 
-	// 先连接到 PostgreSQL 服务器，不指定数据库
-	dsn := fmt.Sprintf("%s:%s@tcp(%s)/?charset=utf8mb4&parseTime=True&loc=Local",
-		DatabaseSetting.User,
-		DatabaseSetting.Password,
-		DatabaseSetting.Host)
+	var tempDB *gorm.DB
+	var dsn string
 
-	tempDB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	// 根据数据库类型选择正确的数据库驱动
+	switch DatabaseSetting.Type {
+	case "mysql":
+		// 连接到 MySQL 服务器，不指定数据库
+		dsn = fmt.Sprintf("%s:%s@tcp(%s)/?charset=utf8mb4&parseTime=True&loc=Local",
+			DatabaseSetting.User,
+			DatabaseSetting.Password,
+			DatabaseSetting.Host)
+		tempDB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	case "pgsql":
+		// 连接到 PostgreSQL 服务器，不指定数据库
+		dsn = fmt.Sprintf("host=%s user=%s password=%s sslmode=disable",
+			DatabaseSetting.Host,
+			DatabaseSetting.User,
+			DatabaseSetting.Password)
+		tempDB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	default:
+		log.Fatalf("Unsupported database type: %s", DatabaseSetting.Type)
+	}
 	if err != nil {
-		log.Fatalf("Failed to connect to PostgreSQL server: %v", err)
+		log.Fatalf("Failed to connect to database server: %v", err)
 	}
 
 	// 创建数据库（如果不存在）
-	sql := fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s;", DatabaseSetting.Name)
-	err = tempDB.Exec(sql).Error
+	var sql string
+	switch DatabaseSetting.Type {
+	case "mysql":
+		sql = fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s;", DatabaseSetting.Name)
+	case "pgsql":
+		// 检查数据库是否存在
+		var exists bool
+		err = tempDB.Raw("SELECT EXISTS(SELECT 1 FROM pg_database WHERE datname = ?)", DatabaseSetting.Name).Scan(&exists).Error
+		if err != nil {
+			log.Fatalf("Failed to check if database exists: %v", err)
+		}
+
+		// 如果数据库不存在，则创建
+		if !exists {
+			sql = fmt.Sprintf("CREATE DATABASE %s;", DatabaseSetting.Name)
+		} else {
+			// 数据库已存在，跳过创建
+			sql = ""
+		}
+	}
+
+	// 执行创建数据库的SQL语句
+	if sql != "" {
+		err = tempDB.Exec(sql).Error
+	}
 	if err != nil {
 		log.Fatalf("Failed to create database: %v", err)
 	}
 
 	// 连接到指定的数据库
-	dsn = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		DatabaseSetting.User,
-		DatabaseSetting.Password,
-		DatabaseSetting.Host,
-		DatabaseSetting.Name)
+	var dialector gorm.Dialector
+	switch DatabaseSetting.Type {
+	case "mysql":
+		dsn = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+			DatabaseSetting.User,
+			DatabaseSetting.Password,
+			DatabaseSetting.Host,
+			DatabaseSetting.Name)
+		dialector = mysql.Open(dsn)
+	case "pgsql":
+		dsn = fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable",
+			DatabaseSetting.Host,
+			DatabaseSetting.User,
+			DatabaseSetting.Password,
+			DatabaseSetting.Name)
+		dialector = postgres.Open(dsn)
+	default:
+		log.Fatalf("Unsupported database type: %s", DatabaseSetting.Type)
+	}
 
-	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
+	db, err = gorm.Open(dialector, &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 		NamingStrategy: schema.NamingStrategy{
 			TablePrefix:   DatabaseSetting.TablePrefix,
@@ -126,6 +179,19 @@ func Setup() {
 	)
 	if err != nil {
 		log.Fatalf("Failed to migrate event tables: %v", err)
+	}
+
+	// 创建错误相关表
+	err = db.AutoMigrate(
+		&ErrorDetail{},
+		&HttpErrorDetail{},
+		&ResourceErrorDetail{},
+		&VueErrorDetail{},
+		&ReactErrorDetail{},
+		&ErrorGroup{},
+	)
+	if err != nil {
+		log.Fatalf("Failed to migrate error tables: %v", err)
 	}
 }
 

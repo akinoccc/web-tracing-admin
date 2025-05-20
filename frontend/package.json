@@ -10,6 +10,7 @@
     "generate-api": "kubb generate"
   },
   "dependencies": {
+    "@internationalized/date": "^3.8.1",
     "@vueuse/core": "^13.1.0",
     "axios": "^1.8.4",
     "chart.js": "^4.4.9",

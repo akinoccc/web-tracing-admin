@@ -1,0 +1,1 @@
+{"type":"object","properties":{"avgStayTime":{"type":"integer"},"bounceRate":{"type":"number"},"pvToday":{"type":"integer"},"topPages":{"type":"object","additionalProperties":{"type":"integer"}},"totalPV":{"type":"integer"},"totalUV":{"type":"integer"},"uvToday":{"type":"integer"}},"x-readme-ref-name":"service.PVStatsData"}

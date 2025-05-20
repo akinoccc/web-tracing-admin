@@ -10,232 +10,6 @@ definitions:
       message:
         type: string
     type: object
-  model.BaseInfo:
-    properties:
-      appCode:
-        type: string
-      appName:
-        type: string
-      browser:
-        type: string
-      browserVersion:
-        type: string
-      clientHeight:
-        type: integer
-      clientWidth:
-        type: integer
-      colorDepth:
-        type: integer
-      createdAt:
-        type: string
-      deviceId:
-        type: string
-      deviceType:
-        type: string
-      ext:
-        type: string
-      id:
-        type: integer
-      ip:
-        type: string
-      os:
-        type: string
-      osVersion:
-        type: string
-      pageId:
-        type: string
-      pixelDepth:
-        type: integer
-      platform:
-        type: string
-      projectId:
-        type: integer
-      screenHeight:
-        type: integer
-      screenWidth:
-        type: integer
-      sdkUserUuid:
-        type: string
-      sdkVersion:
-        type: string
-      sendTime:
-        type: integer
-      sessionId:
-        type: string
-      updatedAt:
-        type: string
-      userAgent:
-        type: string
-      userId:
-        type: string
-      userUuid:
-        type: string
-      vendor:
-        type: string
-    type: object
-  model.ClickEvent:
-    properties:
-      createdAt:
-        type: string
-      elementPath:
-        type: string
-      elementType:
-        type: string
-      event:
-        $ref: '#/definitions/model.Event'
-      eventId:
-        type: integer
-      id:
-        type: integer
-      innerText:
-        type: string
-      updatedAt:
-        type: string
-    type: object
-  model.ErrorEvent:
-    properties:
-      columnNumber:
-        type: integer
-      componentName:
-        type: string
-      createdAt:
-        type: string
-      errorMessage:
-        type: string
-      errorStack:
-        type: string
-      errorType:
-        type: string
-      event:
-        $ref: '#/definitions/model.Event'
-      eventId:
-        type: integer
-      filePath:
-        type: string
-      id:
-        type: integer
-      lineNumber:
-        type: integer
-      recordScreen:
-        type: string
-      updatedAt:
-        type: string
-    type: object
-  model.Event:
-    properties:
-      baseInfo:
-        $ref: '#/definitions/model.BaseInfo'
-      baseInfoId:
-        type: integer
-      createdAt:
-        type: string
-      eventId:
-        type: string
-      eventType:
-        type: string
-      id:
-        type: integer
-      projectId:
-        type: integer
-      referer:
-        type: string
-      sendTime:
-        type: integer
-      title:
-        type: string
-      triggerPageUrl:
-        type: string
-      triggerTime:
-        type: integer
-      updatedAt:
-        type: string
-    type: object
-  model.ExposureEvent:
-    properties:
-      createdAt:
-        type: string
-      elementPath:
-        type: string
-      elementType:
-        type: string
-      event:
-        $ref: '#/definitions/model.Event'
-      eventId:
-        type: integer
-      id:
-        type: integer
-      innerText:
-        type: string
-      updatedAt:
-        type: string
-    type: object
-  model.PerformanceEvent:
-    properties:
-      connectEnd:
-        type: number
-      connectStart:
-        type: number
-      createdAt:
-        type: string
-      decodedBodySize:
-        type: integer
-      dom:
-        type: number
-      domainLookupEnd:
-        type: number
-      domainLookupStart:
-        type: number
-      duration:
-        type: number
-      encodedBodySize:
-        type: integer
-      event:
-        $ref: '#/definitions/model.Event'
-      eventId:
-        type: integer
-      fetchStart:
-        type: number
-      firstbyte:
-        type: number
-      id:
-        type: integer
-      initiatorType:
-        description: 资源性能指标
-        type: string
-      loadon:
-        type: number
-      ready:
-        type: number
-      requestStart:
-        type: number
-      requestUrl:
-        type: string
-      res:
-        type: number
-      resourceType:
-        type: string
-      responseEnd:
-        type: number
-      responseStart:
-        type: number
-      responseStatus:
-        type: string
-      ssllink:
-        type: number
-      startTime:
-        type: number
-      trans:
-        type: number
-      transferSize:
-        type: integer
-      ttfb:
-        type: number
-      tti:
-        description: 页面性能指标
-        type: number
-      updatedAt:
-        type: string
-    type: object
   model.Project:
     properties:
       appKey:
@@ -255,46 +29,6 @@ definitions:
       userId:
         type: integer
     type: object
-  model.RequestEvent:
-    properties:
-      createdAt:
-        type: string
-      duration:
-        type: number
-      event:
-        $ref: '#/definitions/model.Event'
-      eventId:
-        type: integer
-      id:
-        type: integer
-      requestMethod:
-        type: string
-      requestParams:
-        type: string
-      requestUrl:
-        type: string
-      responseData:
-        type: string
-      responseStatus:
-        type: integer
-      updatedAt:
-        type: string
-    type: object
-  model.RouteEvent:
-    properties:
-      action:
-        type: string
-      createdAt:
-        type: string
-      event:
-        $ref: '#/definitions/model.Event'
-      eventId:
-        type: integer
-      id:
-        type: integer
-      updatedAt:
-        type: string
-    type: object
   model.User:
     properties:
       createdAt:
@@ -308,6 +42,54 @@ definitions:
       username:
         type: string
     type: object
+  service.BehaviorStatsResponse:
+    properties:
+      clickStats:
+        $ref: '#/definitions/service.ClickStatsData'
+      pvStats:
+        $ref: '#/definitions/service.PVStatsData'
+      pvTrend:
+        items:
+          $ref: '#/definitions/service.PVTrendItem'
+        type: array
+    type: object
+  service.ClickItem:
+    properties:
+      elementPath:
+        type: string
+      elementType:
+        type: string
+      eventId:
+        type: string
+      id:
+        type: integer
+      innerText:
+        type: string
+      pageUrl:
+        type: string
+      triggerTime:
+        type: integer
+    type: object
+  service.ClickListResponse:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/service.ClickItem'
+        type: array
+      total:
+        type: integer
+    type: object
+  service.ClickStatsData:
+    properties:
+      clicksToday:
+        type: integer
+      topElements:
+        additionalProperties:
+          type: integer
+        type: object
+      totalClicks:
+        type: integer
+    type: object
   service.CreateProjectRequest:
     properties:
       description:
@@ -317,53 +99,118 @@ definitions:
     required:
     - name
     type: object
-  service.DistributionStatsResponse:
+  service.ErrorDetailResponse:
     properties:
-      labels:
+      events:
         items:
-          type: string
+          $ref: '#/definitions/service.ErrorEventItem'
         type: array
-      values:
-        items:
-          type: integer
-        type: array
-    type: object
-  service.EventDetailResponse:
-    properties:
-      click:
-        $ref: '#/definitions/model.ClickEvent'
-      errorEvent:
-        $ref: '#/definitions/model.ErrorEvent'
-      event:
-        $ref: '#/definitions/model.Event'
-      exposure:
-        $ref: '#/definitions/model.ExposureEvent'
-      performance:
-        $ref: '#/definitions/model.PerformanceEvent'
-      request:
-        $ref: '#/definitions/model.RequestEvent'
-      route:
-        $ref: '#/definitions/model.RouteEvent'
-    type: object
-  service.EventListResponse:
-    properties:
-      list:
-        items:
-          $ref: '#/definitions/model.Event'
-        type: array
+      group:
+        $ref: '#/definitions/service.ErrorGroupItem'
       total:
         type: integer
     type: object
-  service.EventStatsResponse:
+  service.ErrorEventItem:
     properties:
-      counts:
+      browser:
+        type: string
+      columnNumber:
+        type: integer
+      device:
+        type: string
+      errorMessage:
+        type: string
+      errorStack:
+        type: string
+      errorType:
+        type: string
+      eventId:
+        type: string
+      filePath:
+        type: string
+      id:
+        type: integer
+      lineNumber:
+        type: integer
+      os:
+        type: string
+      pageUrl:
+        type: string
+      triggerTime:
+        type: integer
+    type: object
+  service.ErrorGroupItem:
+    properties:
+      count:
+        type: integer
+      errorMessage:
+        type: string
+      errorType:
+        type: string
+      fingerprint:
+        type: string
+      firstSeen:
+        type: integer
+      id:
+        type: integer
+      lastSeen:
+        type: integer
+      severity:
+        type: string
+      status:
+        type: string
+      subType:
+        type: string
+    type: object
+  service.ErrorListResponse:
+    properties:
+      list:
         items:
+          $ref: '#/definitions/service.ErrorGroupItem'
+        type: array
+      stats:
+        $ref: '#/definitions/service.ErrorStatsData'
+      total:
+        type: integer
+    type: object
+  service.ErrorStatsData:
+    properties:
+      affectedUsers:
+        type: integer
+      browserDistribution:
+        additionalProperties:
           type: integer
-        type: array
-      dates:
+        type: object
+      errorsToday:
+        type: integer
+      errorsYesterday:
+        type: integer
+      osDistribution:
+        additionalProperties:
+          type: integer
+        type: object
+      totalErrors:
+        type: integer
+      typeDistribution:
+        additionalProperties:
+          type: integer
+        type: object
+    type: object
+  service.ErrorStatsResponse:
+    properties:
+      stats:
+        $ref: '#/definitions/service.ErrorStatsData'
+      trend:
         items:
-          type: string
+          $ref: '#/definitions/service.ErrorTrendItem'
         type: array
+    type: object
+  service.ErrorTrendItem:
+    properties:
+      count:
+        type: integer
+      date:
+        type: string
     type: object
   service.LoginRequest:
     properties:
@@ -384,16 +231,152 @@ definitions:
       user:
         $ref: '#/definitions/model.User'
     type: object
+  service.PVItem:
+    properties:
+      browser:
+        type: string
+      device:
+        type: string
+      eventId:
+        type: string
+      id:
+        type: integer
+      isNewVisit:
+        type: boolean
+      os:
+        type: string
+      pageUrl:
+        type: string
+      referrer:
+        type: string
+      stayTime:
+        type: integer
+      title:
+        type: string
+      triggerTime:
+        type: integer
+    type: object
+  service.PVListResponse:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/service.PVItem'
+        type: array
+      total:
+        type: integer
+    type: object
+  service.PVStatsData:
+    properties:
+      avgStayTime:
+        type: integer
+      bounceRate:
+        type: number
+      pvToday:
+        type: integer
+      topPages:
+        additionalProperties:
+          type: integer
+        type: object
+      totalPV:
+        type: integer
+      totalUV:
+        type: integer
+      uvToday:
+        type: integer
+    type: object
+  service.PVTrendItem:
+    properties:
+      date:
+        type: string
+      pv:
+        type: integer
+      uv:
+        type: integer
+    type: object
+  service.PerformanceListResponse:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/service.PerformancePageItem'
+        type: array
+      stats:
+        $ref: '#/definitions/service.PerformanceStatsData'
+      total:
+        type: integer
+    type: object
+  service.PerformancePageItem:
+    properties:
+      browser:
+        type: string
+      cls:
+        type: number
+      device:
+        type: string
+      domReady:
+        type: integer
+      eventId:
+        type: string
+      fcp:
+        type: integer
+      fid:
+        type: integer
+      fp:
+        type: integer
+      id:
+        type: integer
+      lcp:
+        type: integer
+      load:
+        type: integer
+      os:
+        type: string
+      pageUrl:
+        type: string
+      triggerTime:
+        type: integer
+      ttfb:
+        type: integer
+    type: object
+  service.PerformanceStatsData:
+    properties:
+      avgCLS:
+        type: number
+      avgDomReady:
+        type: integer
+      avgFCP:
+        type: integer
+      avgFID:
+        type: integer
+      avgFP:
+        type: integer
+      avgLCP:
+        type: integer
+      avgLoad:
+        type: integer
+      avgTTFB:
+        type: integer
+    type: object
   service.PerformanceStatsResponse:
     properties:
-      labels:
+      stats:
+        $ref: '#/definitions/service.PerformanceStatsData'
+      trend:
         items:
-          type: string
+          $ref: '#/definitions/service.PerformanceTrendItem'
         type: array
-      values:
-        items:
-          type: number
-        type: array
+    type: object
+  service.PerformanceTrendItem:
+    properties:
+      date:
+        type: string
+      fcp:
+        type: integer
+      fp:
+        type: integer
+      lcp:
+        type: integer
+      ttfb:
+        type: integer
     type: object
   service.RegisterRequest:
     properties:
@@ -408,27 +391,37 @@ definitions:
     - password
     - username
     type: object
-  service.RequestErrorStatsResponse:
+  service.ResourcePerformanceItem:
     properties:
-      counts:
-        items:
-          type: integer
-        type: array
-      statusCodes:
-        items:
-          type: integer
-        type: array
+      duration:
+        type: integer
+      eventId:
+        type: string
+      id:
+        type: integer
+      initiatorType:
+        type: string
+      pageUrl:
+        type: string
+      resourceType:
+        type: string
+      resourceUrl:
+        type: string
+      startTime:
+        type: integer
+      transferSize:
+        type: integer
     type: object
-  service.TrackWebRequest:
+  service.ResourcePerformanceListResponse:
     properties:
-      baseInfo:
-        additionalProperties: true
-        type: object
-      eventInfo:
+      list:
         items:
-          additionalProperties: true
-          type: object
+          $ref: '#/definitions/service.ResourcePerformanceItem'
         type: array
+      total:
+        type: integer
+    type: object
+  service.TrackRequest:
     type: object
   service.UpdateProjectRequest:
     properties:
@@ -513,34 +506,40 @@ paths:
       summary: 用户注册
       tags:
       - 认证
-  /api/events:
+  /api/behavior/clicks:
     get:
-      description: 获取项目的事件列表
+      description: 获取项目的用户点击数据
       parameters:
       - description: 项目ID
         in: query
         name: projectId
         required: true
         type: integer
-      - description: 事件类型
-        in: query
-        name: eventType
-        type: string
-      - description: 页码
+      - default: 1
+        description: 页码
         in: query
         name: page
         type: integer
-      - description: 每页数量
+      - default: 10
+        description: 每页数量
         in: query
         name: pageSize
+        type: integer
+      - description: 开始时间戳
+        in: query
+        name: startTime
+        type: integer
+      - description: 结束时间戳
+        in: query
+        name: endTime
         type: integer
       produces:
       - application/json
       responses:
         "200":
-          description: 事件列表
+          description: 用户点击数据列表
           schema:
-            $ref: '#/definitions/service.EventListResponse'
+            $ref: '#/definitions/service.ClickListResponse'
         "400":
           description: 请求错误
           schema:
@@ -555,14 +554,165 @@ paths:
             $ref: '#/definitions/api.ErrorResponse'
       security:
       - ApiKeyAuth: []
-      summary: 获取事件列表
+      summary: 获取用户点击数据
       tags:
-      - 事件
-  /api/events/{id}:
+      - 用户行为
+  /api/behavior/pv:
     get:
-      description: 获取事件详细信息
+      description: 获取项目的页面访问数据
       parameters:
-      - description: 事件ID
+      - description: 项目ID
+        in: query
+        name: projectId
+        required: true
+        type: integer
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: pageSize
+        type: integer
+      - description: 开始时间戳
+        in: query
+        name: startTime
+        type: integer
+      - description: 结束时间戳
+        in: query
+        name: endTime
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 页面访问数据列表
+          schema:
+            $ref: '#/definitions/service.PVListResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取页面访问数据
+      tags:
+      - 用户行为
+  /api/behavior/stats:
+    get:
+      description: 获取项目的用户行为统计信息
+      parameters:
+      - description: 项目ID
+        in: query
+        name: projectId
+        required: true
+        type: integer
+      - description: 开始时间戳
+        in: query
+        name: startTime
+        type: integer
+      - description: 结束时间戳
+        in: query
+        name: endTime
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 用户行为统计信息
+          schema:
+            $ref: '#/definitions/service.BehaviorStatsResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取用户行为统计信息
+      tags:
+      - 用户行为
+  /api/errors:
+    get:
+      description: 获取项目的错误列表
+      parameters:
+      - description: 项目ID
+        in: query
+        name: projectId
+        required: true
+        type: integer
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: pageSize
+        type: integer
+      - description: 开始时间戳
+        in: query
+        name: startTime
+        type: integer
+      - description: 结束时间戳
+        in: query
+        name: endTime
+        type: integer
+      - description: 错误类型
+        in: query
+        name: errorType
+        type: string
+      - description: 严重程度
+        in: query
+        name: severity
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 错误列表
+          schema:
+            $ref: '#/definitions/service.ErrorListResponse'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取错误列表
+      tags:
+      - 错误监控
+  /api/errors/{id}:
+    get:
+      description: 获取错误详细信息
+      parameters:
+      - description: 错误ID
         in: path
         name: id
         required: true
@@ -571,9 +721,9 @@ paths:
       - application/json
       responses:
         "200":
-          description: 事件详情
+          description: 错误详情
           schema:
-            $ref: '#/definitions/service.EventDetailResponse'
+            $ref: '#/definitions/service.ErrorDetailResponse'
         "400":
           description: 请求错误
           schema:
@@ -583,7 +733,7 @@ paths:
           schema:
             $ref: '#/definitions/api.ErrorResponse'
         "404":
-          description: 事件不存在
+          description: 错误不存在
           schema:
             $ref: '#/definitions/api.ErrorResponse'
         "500":
@@ -592,35 +742,33 @@ paths:
             $ref: '#/definitions/api.ErrorResponse'
       security:
       - ApiKeyAuth: []
-      summary: 获取事件详情
+      summary: 获取错误详情
       tags:
-      - 事件
-  /api/events/stats:
+      - 错误监控
+  /api/errors/stats:
     get:
-      description: 获取项目的错误事件统计
+      description: 获取项目的错误统计信息
       parameters:
       - description: 项目ID
         in: query
         name: projectId
         required: true
         type: integer
-      - description: 开始时间
+      - description: 开始时间戳
         in: query
         name: startTime
-        required: true
-        type: string
-      - description: 结束时间
+        type: integer
+      - description: 结束时间戳
         in: query
         name: endTime
-        required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
         "200":
-          description: 统计数据
+          description: 错误统计信息
           schema:
-            $ref: '#/definitions/service.EventStatsResponse'
+            $ref: '#/definitions/service.ErrorStatsResponse'
         "400":
           description: 请求错误
           schema:
@@ -635,35 +783,50 @@ paths:
             $ref: '#/definitions/api.ErrorResponse'
       security:
       - ApiKeyAuth: []
-      summary: 获取错误事件统计
+      summary: 获取错误统计信息
       tags:
-      - 事件
-  /api/events/stats/browser:
+      - 错误监控
+  /api/performance:
     get:
-      description: 获取项目的错误事件按浏览器分布统计
+      description: 获取项目的性能数据
       parameters:
       - description: 项目ID
         in: query
         name: projectId
         required: true
         type: integer
-      - description: 开始时间
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: pageSize
+        type: integer
+      - description: 开始时间戳
         in: query
         name: startTime
-        required: true
-        type: string
-      - description: 结束时间
+        type: integer
+      - description: 结束时间戳
         in: query
         name: endTime
-        required: true
+        type: integer
+      - description: 性能类型
+        enum:
+        - page
+        - resource
+        in: query
+        name: type
         type: string
       produces:
       - application/json
       responses:
         "200":
-          description: 统计数据
+          description: 性能数据列表
           schema:
-            $ref: '#/definitions/service.DistributionStatsResponse'
+            $ref: '#/definitions/service.PerformanceListResponse'
         "400":
           description: 请求错误
           schema:
@@ -678,35 +841,47 @@ paths:
             $ref: '#/definitions/api.ErrorResponse'
       security:
       - ApiKeyAuth: []
-      summary: 获取错误事件按浏览器分布统计
+      summary: 获取性能数据
       tags:
-      - 事件
-  /api/events/stats/device:
+      - 性能监控
+  /api/performance/resources:
     get:
-      description: 获取项目的错误事件按设备类型分布统计
+      description: 获取项目的资源性能数据
       parameters:
       - description: 项目ID
         in: query
         name: projectId
         required: true
         type: integer
-      - description: 开始时间
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: pageSize
+        type: integer
+      - description: 开始时间戳
         in: query
         name: startTime
-        required: true
-        type: string
-      - description: 结束时间
+        type: integer
+      - description: 结束时间戳
         in: query
         name: endTime
-        required: true
+        type: integer
+      - description: 资源类型
+        in: query
+        name: resourceType
         type: string
       produces:
       - application/json
       responses:
         "200":
-          description: 统计数据
+          description: 资源性能数据列表
           schema:
-            $ref: '#/definitions/service.DistributionStatsResponse'
+            $ref: '#/definitions/service.ResourcePerformanceListResponse'
         "400":
           description: 请求错误
           schema:
@@ -721,119 +896,31 @@ paths:
             $ref: '#/definitions/api.ErrorResponse'
       security:
       - ApiKeyAuth: []
-      summary: 获取错误事件按设备类型分布统计
+      summary: 获取资源性能数据
       tags:
-      - 事件
-  /api/events/stats/error-type:
+      - 性能监控
+  /api/performance/stats:
     get:
-      description: 获取项目的错误事件按错误类型分布统计
+      description: 获取项目的性能统计信息
       parameters:
       - description: 项目ID
         in: query
         name: projectId
         required: true
         type: integer
-      - description: 开始时间
+      - description: 开始时间戳
         in: query
         name: startTime
-        required: true
-        type: string
-      - description: 结束时间
-        in: query
-        name: endTime
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 统计数据
-          schema:
-            $ref: '#/definitions/service.DistributionStatsResponse'
-        "400":
-          description: 请求错误
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "401":
-          description: 未授权
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "500":
-          description: 内部错误
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: 获取错误事件按错误类型分布统计
-      tags:
-      - 事件
-  /api/events/stats/os:
-    get:
-      description: 获取项目的错误事件按操作系统分布统计
-      parameters:
-      - description: 项目ID
-        in: query
-        name: projectId
-        required: true
         type: integer
-      - description: 开始时间
-        in: query
-        name: startTime
-        required: true
-        type: string
-      - description: 结束时间
+      - description: 结束时间戳
         in: query
         name: endTime
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 统计数据
-          schema:
-            $ref: '#/definitions/service.DistributionStatsResponse'
-        "400":
-          description: 请求错误
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "401":
-          description: 未授权
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "500":
-          description: 内部错误
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: 获取错误事件按操作系统分布统计
-      tags:
-      - 事件
-  /api/events/stats/performance:
-    get:
-      description: 获取项目的性能指标统计
-      parameters:
-      - description: 项目ID
-        in: query
-        name: projectId
-        required: true
         type: integer
-      - description: 开始时间
-        in: query
-        name: startTime
-        required: true
-        type: string
-      - description: 结束时间
-        in: query
-        name: endTime
-        required: true
-        type: string
       produces:
       - application/json
       responses:
         "200":
-          description: 统计数据
+          description: 性能统计信息
           schema:
             $ref: '#/definitions/service.PerformanceStatsResponse'
         "400":
@@ -850,52 +937,9 @@ paths:
             $ref: '#/definitions/api.ErrorResponse'
       security:
       - ApiKeyAuth: []
-      summary: 获取性能指标统计
+      summary: 获取性能统计信息
       tags:
-      - 事件
-  /api/events/stats/request-error:
-    get:
-      description: 获取项目的请求错误统计
-      parameters:
-      - description: 项目ID
-        in: query
-        name: projectId
-        required: true
-        type: integer
-      - description: 开始时间
-        in: query
-        name: startTime
-        required: true
-        type: string
-      - description: 结束时间
-        in: query
-        name: endTime
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 统计数据
-          schema:
-            $ref: '#/definitions/service.RequestErrorStatsResponse'
-        "400":
-          description: 请求错误
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "401":
-          description: 未授权
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "500":
-          description: 内部错误
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: 获取请求错误统计
-      tags:
-      - 事件
+      - 性能监控
   /api/projects:
     get:
       description: 获取当前用户的所有项目
@@ -1073,111 +1117,18 @@ paths:
       summary: 更新项目
       tags:
       - 项目
-  /cleanTracingList:
-    post:
-      description: 清除所有跟踪数据
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 清除成功
-          schema:
-            $ref: '#/definitions/api.SuccessResponse'
-        "500":
-          description: 内部错误
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-      summary: 清除所有跟踪数据
-      tags:
-      - 跟踪
-  /getAllTracingList:
-    get:
-      description: 获取所有跟踪数据
-      parameters:
-      - description: 事件类型
-        in: query
-        name: eventType
-        type: string
-      - description: 开始时间，格式：2006-01-02
-        in: query
-        name: startTime
-        type: string
-      - description: 结束时间，格式：2006-01-02
-        in: query
-        name: endTime
-        type: string
-      - description: 关键字搜索
-        in: query
-        name: keyword
-        type: string
-      - description: 浏览器类型
-        in: query
-        name: browser
-        type: string
-      - description: 操作系统
-        in: query
-        name: os
-        type: string
-      - description: 设备类型
-        in: query
-        name: deviceType
-        type: string
-      - description: 错误类型，仅当 eventType=error 时有效
-        in: query
-        name: errorType
-        type: string
-      - description: 响应状态码，仅当 eventType=request 时有效
-        in: query
-        name: responseStatus
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 获取成功
-          schema:
-            $ref: '#/definitions/api.SuccessResponse'
-        "500":
-          description: 内部错误
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-      summary: 获取所有跟踪数据
-      tags:
-      - 跟踪
-  /getBaseInfo:
-    get:
-      description: 获取基础信息
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 获取成功
-          schema:
-            $ref: '#/definitions/api.SuccessResponse'
-        "500":
-          description: 内部错误
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-      summary: 获取基础信息
-      tags:
-      - 跟踪
   /trackweb:
     post:
       consumes:
       - application/json
-      description: SDK 上报跟踪数据接口
+      description: 接收SDK上报的错误和性能数据
       parameters:
-      - description: 应用密钥
-        in: query
-        name: app_key
-        required: true
-        type: string
-      - description: 跟踪数据
+      - description: 上报数据
         in: body
         name: data
         required: true
         schema:
-          $ref: '#/definitions/service.TrackWebRequest'
+          $ref: '#/definitions/service.TrackRequest'
       produces:
       - application/json
       responses:
@@ -1193,9 +1144,9 @@ paths:
           description: 内部错误
           schema:
             $ref: '#/definitions/api.ErrorResponse'
-      summary: 上报跟踪数据
+      summary: 接收SDK上报数据
       tags:
-      - 跟踪
+      - 数据上报
 schemes:
 - http
 - https

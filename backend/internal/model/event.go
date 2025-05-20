@@ -1,121 +1,204 @@
 package model
 
-import (
-	"gorm.io/datatypes"
+// 事件类型枚举
+const (
+	EventTypeError               = "error"
+	EventTypePerformancePage     = "performance_page"
+	EventTypePerformanceResource = "performance_resource"
+	EventTypePV                  = "pv"
+	EventTypeClick               = "click"
+	EventTypeDwell               = "dwell"
+	EventTypeIntersection        = "intersection"
+	EventTypeCustom              = "custom"
 )
 
-// BaseInfo holds the common client-side metadata.
+// 错误类型枚举
+const (
+	ErrorTypeJS       = "js_error"
+	ErrorTypePromise  = "promise_rejection"
+	ErrorTypeResource = "resource_error"
+	ErrorTypeHttp     = "http_error"
+	ErrorTypeVue      = "vue_error"
+	ErrorTypeReact    = "react_error"
+	ErrorTypeCustom   = "custom_error"
+)
+
+// 错误子类型枚举
+const (
+	ErrorSubTypeSyntax       = "syntax_error"
+	ErrorSubTypeReference    = "reference_error"
+	ErrorSubTypeType         = "type_error"
+	ErrorSubTypeRange        = "range_error"
+	ErrorSubTypeBadRequest   = "bad_request"
+	ErrorSubTypeUnauthorized = "unauthorized"
+	ErrorSubTypeForbidden    = "forbidden"
+	ErrorSubTypeNotFound     = "not_found"
+	ErrorSubTypeServerError  = "server_error"
+	ErrorSubTypeTimeout      = "timeout"
+	ErrorSubTypeNetworkError = "network_error"
+	ErrorSubTypeComponent    = "component_error"
+	ErrorSubTypeRender       = "render_error"
+	ErrorSubTypeLifecycle    = "lifecycle_error"
+	ErrorSubTypeRouter       = "router_error"
+	ErrorSubTypeStore        = "store_error"
+)
+
+// 错误严重程度枚举
+const (
+	ErrorSeverityFatal   = "fatal"
+	ErrorSeverityError   = "error"
+	ErrorSeverityWarning = "warning"
+	ErrorSeverityInfo    = "info"
+)
+
+// 事件基础信息
 type BaseInfo struct {
-	ID           uint           `gorm:"primaryKey;autoIncrement"`
-	ClientHeight int            `gorm:"not null"`         // client viewport height
-	ClientWidth  int            `gorm:"not null"`         // client viewport width
-	ColorDepth   int            `gorm:"not null"`         // screen color depth
-	PixelDepth   int            `gorm:"not null"`         // screen pixel depth
-	DeviceID     string         `gorm:"size:64;not null"` // unique device identifier
-	ScreenWidth  int            `gorm:"not null"`         // physical screen width
-	ScreenHeight int            `gorm:"not null"`         // physical screen height
-	Vendor       string         `gorm:"size:64;not null"` // browser vendor
-	Platform     string         `gorm:"size:64;not null"` // operating system/platform
-	UserUUID     string         `gorm:"size:64;not null"` // user UUID from app
-	SDKUserUUID  string         `gorm:"size:64;not null"` // SDK‑generated user UUID
-	Ext          datatypes.JSON `gorm:"type:jsonb"`       // any extra fields
-	AppName      string         `gorm:"size:64;not null"` // application name
-	AppCode      string         `gorm:"size:64"`          // optional app code
-	PageID       string         `gorm:"size:64;not null"` // page identifier
-	SessionID    string         `gorm:"size:64;not null"` // session identifier
-	SDKVersion   string         `gorm:"size:32;not null"` // SDK version
-	IP           string         `gorm:"size:45"`          // client IP address
-	SendTime     int64          `gorm:"not null"`         // original JS timestamp (ms)
-	CreatedAt    int64          // record creation time
+	Model
+	ProjectID      uint   `json:"projectId" gorm:"not null"`
+	AppKey         string `json:"appKey" gorm:"size:50;not null"`
+	UserID         string `json:"userId" gorm:"size:100"`
+	UserUUID       string `json:"userUuid" gorm:"size:100"`
+	SessionID      string `json:"sessionId" gorm:"size:100"`
+	PageURL        string `json:"pageUrl" gorm:"type:text"`
+	Referrer       string `json:"referrer" gorm:"type:text"`
+	UserAgent      string `json:"userAgent" gorm:"type:text"`
+	IP             string `json:"ip" gorm:"size:50"`
+	Browser        string `json:"browser" gorm:"size:50"`
+	BrowserVersion string `json:"browserVersion" gorm:"size:50"`
+	OS             string `json:"os" gorm:"size:50"`
+	OSVersion      string `json:"osVersion" gorm:"size:50"`
+	Device         string `json:"device" gorm:"size:50"`
+	DeviceType     string `json:"deviceType" gorm:"size:50"`
+	Vendor         string `json:"vendor" gorm:"size:50"`
+	// 扩展字段
+	SDKVersion   string `json:"sdkVersion" gorm:"size:50"`
+	SDKUserUUID  string `json:"sdkUserUuid" gorm:"size:100"`
+	AppName      string `json:"appName" gorm:"size:100"`
+	AppCode      string `json:"appCode" gorm:"size:50"`
+	Platform     string `json:"platform" gorm:"size:50"`
+	ScreenWidth  int    `json:"screenWidth"`
+	ScreenHeight int    `json:"screenHeight"`
+	ClientWidth  int    `json:"clientWidth"`
+	ClientHeight int    `json:"clientHeight"`
+	ColorDepth   int    `json:"colorDepth"`
+	PixelDepth   int    `json:"pixelDepth"`
+	DeviceID     string `json:"deviceId" gorm:"size:100"`
+	PageID       string `json:"pageId" gorm:"size:100"`
+	SendTime     int64  `json:"sendTime"`
+	Ext          string `json:"ext" gorm:"type:text"`
 }
 
-// EventMain holds the common fields for all events.
+// 事件主表
 type EventMain struct {
-	ID             uint     `gorm:"primaryKey;autoIncrement"`
-	BaseInfoID     uint     `gorm:"not null;index"` // foreign key to BaseInfo
-	BaseInfo       BaseInfo `gorm:"constraint:OnDelete:CASCADE"`
-	EventType      string   `gorm:"size:32;not null"`   // pv, error, performance, etc.
-	EventID        string   `gorm:"size:128;not null"`  // SDK unique event id
-	TriggerPageURL string   `gorm:"type:text;not null"` // location.href at trigger time
-	SendTime       int64    `gorm:"not null"`           // original JS timestamp (ms)
-	CreatedAt      int64    // record creation time
+	Model
+	EventID        string    `json:"eventId" gorm:"size:100;not null;unique"`
+	EventType      string    `json:"eventType" gorm:"size:50;not null"`
+	ProjectID      uint      `json:"projectId" gorm:"not null"`
+	BaseInfoID     uint      `json:"baseInfoId" gorm:"not null"`
+	BaseInfo       *BaseInfo `json:"baseInfo" gorm:"foreignKey:BaseInfoID"`
+	TriggerTime    int64     `json:"triggerTime" gorm:"not null"`
+	SendTime       int64     `json:"sendTime" gorm:"not null"`
+	TriggerPageURL string    `json:"triggerPageUrl" gorm:"type:text"`
+	Title          string    `json:"title" gorm:"size:255"`
+	Referer        string    `json:"referer" gorm:"type:text"`
 }
 
-// performance_page_detail stores page‐level metrics.
+// 性能页面详情
 type PerformancePageDetail struct {
-	MainID    uint      `gorm:"primaryKey"` // references EventMain.ID
-	Main      EventMain `gorm:"constraint:OnDelete:CASCADE"`
-	TTI       float64   // Time To Interactive (ms)
-	Ready     float64   // Document ready event time (ms)
-	LoadOn    float64   // Load event time (ms)
-	FirstByte float64   // Time to first byte (ms)
-	TTFB      float64   // Time to first paint (ms)
-	Trans     float64   // TCP transfer time (ms)
-	DOM       float64   // DOM parsing time (ms)
-	Res       float64   // Resource load time (ms)
-	SSLLINK   float64   // SSL handshake time (ms)
+	Model
+	EventID         uint       `json:"eventId" gorm:"not null"`
+	Event           *EventMain `json:"event" gorm:"foreignKey:EventID"`
+	FP              int64      `json:"fp"`
+	FCP             int64      `json:"fcp"`
+	LCP             int64      `json:"lcp"`
+	FID             int64      `json:"fid"`
+	CLS             float64    `json:"cls"`
+	TTFB            int64      `json:"ttfb"`
+	DomReady        int64      `json:"domReady"`
+	Load            int64      `json:"load"`
+	FirstByte       int64      `json:"firstByte"`
+	DNS             int64      `json:"dns"`
+	TCP             int64      `json:"tcp"`
+	SSL             int64      `json:"ssl"`
+	TTFB2           int64      `json:"ttfb2"`
+	Trans           int64      `json:"trans"`
+	DomParse        int64      `json:"domParse"`
+	ResourceLoad    int64      `json:"resourceLoad"`
+	DomContentLoad  int64      `json:"domContentLoad"`
+	FirstScreenTime int64      `json:"firstScreenTime"`
 }
 
-// performance_resource_detail stores resource‐level metrics.
+// 性能资源详情
 type PerformanceResourceDetail struct {
-	MainID            uint      `gorm:"primaryKey"`
-	Main              EventMain `gorm:"constraint:OnDelete:CASCADE"`
-	InitiatorType     string    `gorm:"size:32"` // resource initiatorType
-	TransferSize      int       // transferSize (bytes)
-	EncodedBodySize   int       // encodedBodySize (bytes)
-	DecodedBodySize   int       // decodedBodySize (bytes)
-	Duration          float64   // total fetch duration (ms)
-	StartTime         float64   // startTime (ms)
-	FetchStart        float64   // fetchStart (ms)
-	DomainLookupStart float64   // domainLookupStart (ms)
-	DomainLookupEnd   float64   // domainLookupEnd (ms)
-	ConnectStart      float64   // connectStart (ms)
-	ConnectEnd        float64   // connectEnd (ms)
-	RequestStart      float64   // requestStart (ms)
-	ResponseStart     float64   // responseStart (ms)
-	ResponseEnd       float64   // responseEnd (ms)
-	RequestURL        string    `gorm:"type:text"` // resource URL
+	Model
+	EventID         uint       `json:"eventId" gorm:"not null"`
+	Event           *EventMain `json:"event" gorm:"foreignKey:EventID"`
+	InitiatorType   string     `json:"initiatorType" gorm:"size:50;not null"`
+	ResourceType    string     `json:"resourceType" gorm:"size:50;not null"`
+	ResourceURL     string     `json:"resourceUrl" gorm:"type:text;not null"`
+	ResponseStatus  string     `json:"responseStatus" gorm:"size:50"`
+	StartTime       int64      `json:"startTime" gorm:"not null"`
+	Duration        int64      `json:"duration" gorm:"not null"`
+	TransferSize    int64      `json:"transferSize"`
+	EncodedBodySize int64      `json:"encodedBodySize"`
+	DecodedBodySize int64      `json:"decodedBodySize"`
+	DNSTime         int64      `json:"dnsTime"`
+	TCPTime         int64      `json:"tcpTime"`
+	SSLTime         int64      `json:"sslTime"`
+	TTFB            int64      `json:"ttfb"`
+	DownloadTime    int64      `json:"downloadTime"`
+	FromCache       bool       `json:"fromCache"`
 }
 
-// pv_detail stores page view events.
+// 页面浏览详情
 type PVDetail struct {
-	MainID      uint      `gorm:"primaryKey"`
-	Main        EventMain `gorm:"constraint:OnDelete:CASCADE"`
-	Referer     string    `gorm:"type:text"` // document.referrer
-	Title       string    `gorm:"type:text"` // document.title
-	Action      string    `gorm:"size:32"`   // custom action e.g. navigation
-	TriggerTime int64     // JS timestamp of the PV event
+	Model
+	EventID      uint       `json:"eventId" gorm:"not null"`
+	Event        *EventMain `json:"event" gorm:"foreignKey:EventID"`
+	PageURL      string     `json:"pageUrl" gorm:"type:text;not null"`
+	Title        string     `json:"title" gorm:"size:255"`
+	Referrer     string     `json:"referrer" gorm:"type:text"`
+	StayTime     int64      `json:"stayTime"`
+	IsNewVisit   bool       `json:"isNewVisit"`
+	IsNewSession bool       `json:"isNewSession"`
 }
 
-// click_detail stores click events.
+// 点击详情
 type ClickDetail struct {
-	MainID      uint      `gorm:"primaryKey"`
-	Main        EventMain `gorm:"constraint:OnDelete:CASCADE"`
-	ElementID   string    `gorm:"type:text"` // clicked element selector or id
-	TriggerTime int64     // JS timestamp of click
+	Model
+	EventID     uint       `json:"eventId" gorm:"not null"`
+	Event       *EventMain `json:"event" gorm:"foreignKey:EventID"`
+	ElementPath string     `json:"elementPath" gorm:"type:text"`
+	ElementType string     `json:"elementType" gorm:"size:50"`
+	InnerText   string     `json:"innerText" gorm:"type:text"`
 }
 
-// dwell_detail stores page unload (dwell) events.
+// 停留详情
 type DwellDetail struct {
-	MainID       uint      `gorm:"primaryKey"`
-	Main         EventMain `gorm:"constraint:OnDelete:CASCADE"`
-	StayDuration int       // time on page (ms)
-	TriggerTime  int64     // JS timestamp of unload
+	Model
+	EventID  uint       `json:"eventId" gorm:"not null"`
+	Event    *EventMain `json:"event" gorm:"foreignKey:EventID"`
+	PageURL  string     `json:"pageUrl" gorm:"type:text;not null"`
+	Title    string     `json:"title" gorm:"size:255"`
+	StayTime int64      `json:"stayTime" gorm:"not null"`
 }
 
-// custom_detail stores custom events.
-type CustomDetail struct {
-	MainID      uint           `gorm:"primaryKey"`
-	Main        EventMain      `gorm:"constraint:OnDelete:CASCADE"`
-	Data        datatypes.JSON `gorm:"type:jsonb;not null"` // custom payload from ext
-	TriggerTime int64          // JS timestamp of custom event
-}
-
-// intersection_detail stores exposure events.
+// 曝光详情
 type IntersectionDetail struct {
-	MainID      uint      `gorm:"primaryKey"`
-	Main        EventMain `gorm:"constraint:OnDelete:CASCADE"`
-	ElementID   string    `gorm:"type:text"`         // observed element selector or id
-	Ratio       float32   `gorm:"type:numeric(5,4)"` // intersectionRatio
-	TriggerTime int64     // JS timestamp of intersection
+	Model
+	EventID     uint       `json:"eventId" gorm:"not null"`
+	Event       *EventMain `json:"event" gorm:"foreignKey:EventID"`
+	ElementPath string     `json:"elementPath" gorm:"type:text"`
+	ElementType string     `json:"elementType" gorm:"size:50"`
+	InnerText   string     `json:"innerText" gorm:"type:text"`
+}
+
+// 自定义事件详情
+type CustomDetail struct {
+	Model
+	EventID     uint       `json:"eventId" gorm:"not null"`
+	Event       *EventMain `json:"event" gorm:"foreignKey:EventID"`
+	EventName   string     `json:"eventName" gorm:"size:100;not null"`
+	EventParams string     `json:"eventParams" gorm:"type:text"`
+	Data        string     `json:"data" gorm:"type:text"`
 }

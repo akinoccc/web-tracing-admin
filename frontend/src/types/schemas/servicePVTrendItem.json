@@ -1,0 +1,1 @@
+{"type":"object","properties":{"date":{"type":"string"},"pv":{"type":"integer"},"uv":{"type":"integer"}},"x-readme-ref-name":"service.PVTrendItem"}

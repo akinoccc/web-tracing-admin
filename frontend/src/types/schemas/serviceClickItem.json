@@ -1,0 +1,1 @@
+{"type":"object","properties":{"elementPath":{"type":"string"},"elementType":{"type":"string"},"eventId":{"type":"string"},"id":{"type":"integer"},"innerText":{"type":"string"},"pageUrl":{"type":"string"},"triggerTime":{"type":"integer"}},"x-readme-ref-name":"service.ClickItem"}

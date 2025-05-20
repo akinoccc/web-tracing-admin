@@ -1,0 +1,1 @@
+{"type":"object","properties":{"avgCLS":{"type":"number"},"avgDomReady":{"type":"integer"},"avgFCP":{"type":"integer"},"avgFID":{"type":"integer"},"avgFP":{"type":"integer"},"avgLCP":{"type":"integer"},"avgLoad":{"type":"integer"},"avgTTFB":{"type":"integer"}},"x-readme-ref-name":"service.PerformanceStatsData"}

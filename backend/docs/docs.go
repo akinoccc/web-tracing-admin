@@ -116,21 +116,21 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/events": {
+        "/api/behavior/clicks": {
             "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "获取项目的事件列表",
+                "description": "获取项目的用户点击数据",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "事件"
+                    "用户行为"
                 ],
-                "summary": "获取事件列表",
+                "summary": "获取用户点击数据",
                 "parameters": [
                     {
                         "type": "integer",
@@ -140,29 +140,37 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "事件类型",
-                        "name": "eventType",
-                        "in": "query"
-                    },
-                    {
                         "type": "integer",
+                        "default": 1,
                         "description": "页码",
                         "name": "page",
                         "in": "query"
                     },
                     {
                         "type": "integer",
+                        "default": 10,
                         "description": "每页数量",
                         "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "开始时间戳",
+                        "name": "startTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "结束时间戳",
+                        "name": "endTime",
                         "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "事件列表",
+                        "description": "用户点击数据列表",
                         "schema": {
-                            "$ref": "#/definitions/service.EventListResponse"
+                            "$ref": "#/definitions/service.ClickListResponse"
                         }
                     },
                     "400": {
@@ -186,21 +194,21 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/events/stats": {
+        "/api/behavior/pv": {
             "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "获取项目的错误事件统计",
+                "description": "获取项目的页面访问数据",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "事件"
+                    "用户行为"
                 ],
-                "summary": "获取错误事件统计",
+                "summary": "获取页面访问数据",
                 "parameters": [
                     {
                         "type": "integer",
@@ -210,25 +218,37 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "开始时间",
-                        "name": "startTime",
-                        "in": "query",
-                        "required": true
+                        "type": "integer",
+                        "default": 1,
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "结束时间",
+                        "type": "integer",
+                        "default": 10,
+                        "description": "每页数量",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "开始时间戳",
+                        "name": "startTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "结束时间戳",
                         "name": "endTime",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "统计数据",
+                        "description": "页面访问数据列表",
                         "schema": {
-                            "$ref": "#/definitions/service.EventStatsResponse"
+                            "$ref": "#/definitions/service.PVListResponse"
                         }
                     },
                     "400": {
@@ -252,21 +272,21 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/events/stats/browser": {
+        "/api/behavior/stats": {
             "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "获取项目的错误事件按浏览器分布统计",
+                "description": "获取项目的用户行为统计信息",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "事件"
+                    "用户行为"
                 ],
-                "summary": "获取错误事件按浏览器分布统计",
+                "summary": "获取用户行为统计信息",
                 "parameters": [
                     {
                         "type": "integer",
@@ -276,25 +296,23 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "开始时间",
+                        "type": "integer",
+                        "description": "开始时间戳",
                         "name": "startTime",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "结束时间",
+                        "type": "integer",
+                        "description": "结束时间戳",
                         "name": "endTime",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "统计数据",
+                        "description": "用户行为统计信息",
                         "schema": {
-                            "$ref": "#/definitions/service.DistributionStatsResponse"
+                            "$ref": "#/definitions/service.BehaviorStatsResponse"
                         }
                     },
                     "400": {
@@ -318,21 +336,21 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/events/stats/device": {
+        "/api/errors": {
             "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "获取项目的错误事件按设备类型分布统计",
+                "description": "获取项目的错误列表",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "事件"
+                    "错误监控"
                 ],
-                "summary": "获取错误事件按设备类型分布统计",
+                "summary": "获取错误列表",
                 "parameters": [
                     {
                         "type": "integer",
@@ -342,25 +360,49 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "开始时间",
+                        "type": "integer",
+                        "default": 1,
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "每页数量",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "开始时间戳",
                         "name": "startTime",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "结束时间戳",
+                        "name": "endTime",
+                        "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "结束时间",
-                        "name": "endTime",
-                        "in": "query",
-                        "required": true
+                        "description": "错误类型",
+                        "name": "errorType",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "严重程度",
+                        "name": "severity",
+                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "统计数据",
+                        "description": "错误列表",
                         "schema": {
-                            "$ref": "#/definitions/service.DistributionStatsResponse"
+                            "$ref": "#/definitions/service.ErrorListResponse"
                         }
                     },
                     "400": {
@@ -384,21 +426,21 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/events/stats/error-type": {
+        "/api/errors/stats": {
             "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "获取项目的错误事件按错误类型分布统计",
+                "description": "获取项目的错误统计信息",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "事件"
+                    "错误监控"
                 ],
-                "summary": "获取错误事件按错误类型分布统计",
+                "summary": "获取错误统计信息",
                 "parameters": [
                     {
                         "type": "integer",
@@ -408,25 +450,23 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "开始时间",
+                        "type": "integer",
+                        "description": "开始时间戳",
                         "name": "startTime",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "结束时间",
+                        "type": "integer",
+                        "description": "结束时间戳",
                         "name": "endTime",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "统计数据",
+                        "description": "错误统计信息",
                         "schema": {
-                            "$ref": "#/definitions/service.DistributionStatsResponse"
+                            "$ref": "#/definitions/service.ErrorStatsResponse"
                         }
                     },
                     "400": {
@@ -450,223 +490,25 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/events/stats/os": {
+        "/api/errors/{id}": {
             "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "获取项目的错误事件按操作系统分布统计",
+                "description": "获取错误详细信息",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "事件"
+                    "错误监控"
                 ],
-                "summary": "获取错误事件按操作系统分布统计",
+                "summary": "获取错误详情",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "项目ID",
-                        "name": "projectId",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "开始时间",
-                        "name": "startTime",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "结束时间",
-                        "name": "endTime",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "统计数据",
-                        "schema": {
-                            "$ref": "#/definitions/service.DistributionStatsResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "请求错误",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "未授权",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/events/stats/performance": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "获取项目的性能指标统计",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "事件"
-                ],
-                "summary": "获取性能指标统计",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "projectId",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "开始时间",
-                        "name": "startTime",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "结束时间",
-                        "name": "endTime",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "统计数据",
-                        "schema": {
-                            "$ref": "#/definitions/service.PerformanceStatsResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "请求错误",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "未授权",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/events/stats/request-error": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "获取项目的请求错误统计",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "事件"
-                ],
-                "summary": "获取请求错误统计",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "projectId",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "开始时间",
-                        "name": "startTime",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "结束时间",
-                        "name": "endTime",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "统计数据",
-                        "schema": {
-                            "$ref": "#/definitions/service.RequestErrorStatsResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "请求错误",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "未授权",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/events/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "获取事件详细信息",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "事件"
-                ],
-                "summary": "获取事件详情",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "事件ID",
+                        "description": "错误ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -674,9 +516,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "事件详情",
+                        "description": "错误详情",
                         "schema": {
-                            "$ref": "#/definitions/service.EventDetailResponse"
+                            "$ref": "#/definitions/service.ErrorDetailResponse"
                         }
                     },
                     "400": {
@@ -692,7 +534,243 @@ const docTemplate = `{
                         }
                     },
                     "404": {
-                        "description": "事件不存在",
+                        "description": "错误不存在",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/performance": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取项目的性能数据",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "性能监控"
+                ],
+                "summary": "获取性能数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "projectId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "每页数量",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "开始时间戳",
+                        "name": "startTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "结束时间戳",
+                        "name": "endTime",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "page",
+                            "resource"
+                        ],
+                        "type": "string",
+                        "description": "性能类型",
+                        "name": "type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "性能数据列表",
+                        "schema": {
+                            "$ref": "#/definitions/service.PerformanceListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/performance/resources": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取项目的资源性能数据",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "性能监控"
+                ],
+                "summary": "获取资源性能数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "projectId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "每页数量",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "开始时间戳",
+                        "name": "startTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "结束时间戳",
+                        "name": "endTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "资源类型",
+                        "name": "resourceType",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "资源性能数据列表",
+                        "schema": {
+                            "$ref": "#/definitions/service.ResourcePerformanceListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/performance/stats": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取项目的性能统计信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "性能监控"
+                ],
+                "summary": "获取性能统计信息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "projectId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "开始时间戳",
+                        "name": "startTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "结束时间戳",
+                        "name": "endTime",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "性能统计信息",
+                        "schema": {
+                            "$ref": "#/definitions/service.PerformanceStatsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
                         "schema": {
                             "$ref": "#/definitions/api.ErrorResponse"
                         }
@@ -983,143 +1061,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/cleanTracingList": {
-            "post": {
-                "description": "清除所有跟踪数据",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "跟踪"
-                ],
-                "summary": "清除所有跟踪数据",
-                "responses": {
-                    "200": {
-                        "description": "清除成功",
-                        "schema": {
-                            "$ref": "#/definitions/api.SuccessResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/getAllTracingList": {
-            "get": {
-                "description": "获取所有跟踪数据",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "跟踪"
-                ],
-                "summary": "获取所有跟踪数据",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "事件类型",
-                        "name": "eventType",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "开始时间，格式：2006-01-02",
-                        "name": "startTime",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "结束时间，格式：2006-01-02",
-                        "name": "endTime",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "关键字搜索",
-                        "name": "keyword",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "浏览器类型",
-                        "name": "browser",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "操作系统",
-                        "name": "os",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备类型",
-                        "name": "deviceType",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "错误类型，仅当 eventType=error 时有效",
-                        "name": "errorType",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "响应状态码，仅当 eventType=request 时有效",
-                        "name": "responseStatus",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "获取成功",
-                        "schema": {
-                            "$ref": "#/definitions/api.SuccessResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/getBaseInfo": {
-            "get": {
-                "description": "获取基础信息",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "跟踪"
-                ],
-                "summary": "获取基础信息",
-                "responses": {
-                    "200": {
-                        "description": "获取成功",
-                        "schema": {
-                            "$ref": "#/definitions/api.SuccessResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/trackweb": {
             "post": {
-                "description": "SDK 上报跟踪数据接口",
+                "description": "接收SDK上报的错误和性能数据",
                 "consumes": [
                     "application/json"
                 ],
@@ -1127,24 +1071,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "跟踪"
+                    "数据上报"
                 ],
-                "summary": "上报跟踪数据",
+                "summary": "接收SDK上报数据",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "应用密钥",
-                        "name": "app_key",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "description": "跟踪数据",
+                        "description": "上报数据",
                         "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/service.TrackWebRequest"
+                            "$ref": "#/definitions/service.TrackRequest"
                         }
                     }
                 ],
@@ -1188,347 +1125,6 @@ const docTemplate = `{
                 }
             }
         },
-        "model.BaseInfo": {
-            "type": "object",
-            "properties": {
-                "appCode": {
-                    "type": "string"
-                },
-                "appName": {
-                    "type": "string"
-                },
-                "browser": {
-                    "type": "string"
-                },
-                "browserVersion": {
-                    "type": "string"
-                },
-                "clientHeight": {
-                    "type": "integer"
-                },
-                "clientWidth": {
-                    "type": "integer"
-                },
-                "colorDepth": {
-                    "type": "integer"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "deviceId": {
-                    "type": "string"
-                },
-                "deviceType": {
-                    "type": "string"
-                },
-                "ext": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "ip": {
-                    "type": "string"
-                },
-                "os": {
-                    "type": "string"
-                },
-                "osVersion": {
-                    "type": "string"
-                },
-                "pageId": {
-                    "type": "string"
-                },
-                "pixelDepth": {
-                    "type": "integer"
-                },
-                "platform": {
-                    "type": "string"
-                },
-                "projectId": {
-                    "type": "integer"
-                },
-                "screenHeight": {
-                    "type": "integer"
-                },
-                "screenWidth": {
-                    "type": "integer"
-                },
-                "sdkUserUuid": {
-                    "type": "string"
-                },
-                "sdkVersion": {
-                    "type": "string"
-                },
-                "sendTime": {
-                    "type": "integer"
-                },
-                "sessionId": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                },
-                "userAgent": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                },
-                "userUuid": {
-                    "type": "string"
-                },
-                "vendor": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.ClickEvent": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "elementPath": {
-                    "type": "string"
-                },
-                "elementType": {
-                    "type": "string"
-                },
-                "event": {
-                    "$ref": "#/definitions/model.Event"
-                },
-                "eventId": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "innerText": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.ErrorEvent": {
-            "type": "object",
-            "properties": {
-                "columnNumber": {
-                    "type": "integer"
-                },
-                "componentName": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "errorMessage": {
-                    "type": "string"
-                },
-                "errorStack": {
-                    "type": "string"
-                },
-                "errorType": {
-                    "type": "string"
-                },
-                "event": {
-                    "$ref": "#/definitions/model.Event"
-                },
-                "eventId": {
-                    "type": "integer"
-                },
-                "filePath": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "lineNumber": {
-                    "type": "integer"
-                },
-                "recordScreen": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.Event": {
-            "type": "object",
-            "properties": {
-                "baseInfo": {
-                    "$ref": "#/definitions/model.BaseInfo"
-                },
-                "baseInfoId": {
-                    "type": "integer"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "eventId": {
-                    "type": "string"
-                },
-                "eventType": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "projectId": {
-                    "type": "integer"
-                },
-                "referer": {
-                    "type": "string"
-                },
-                "sendTime": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "triggerPageUrl": {
-                    "type": "string"
-                },
-                "triggerTime": {
-                    "type": "integer"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.ExposureEvent": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "elementPath": {
-                    "type": "string"
-                },
-                "elementType": {
-                    "type": "string"
-                },
-                "event": {
-                    "$ref": "#/definitions/model.Event"
-                },
-                "eventId": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "innerText": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.PerformanceEvent": {
-            "type": "object",
-            "properties": {
-                "connectEnd": {
-                    "type": "number"
-                },
-                "connectStart": {
-                    "type": "number"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "decodedBodySize": {
-                    "type": "integer"
-                },
-                "dom": {
-                    "type": "number"
-                },
-                "domainLookupEnd": {
-                    "type": "number"
-                },
-                "domainLookupStart": {
-                    "type": "number"
-                },
-                "duration": {
-                    "type": "number"
-                },
-                "encodedBodySize": {
-                    "type": "integer"
-                },
-                "event": {
-                    "$ref": "#/definitions/model.Event"
-                },
-                "eventId": {
-                    "type": "integer"
-                },
-                "fetchStart": {
-                    "type": "number"
-                },
-                "firstbyte": {
-                    "type": "number"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "initiatorType": {
-                    "description": "资源性能指标",
-                    "type": "string"
-                },
-                "loadon": {
-                    "type": "number"
-                },
-                "ready": {
-                    "type": "number"
-                },
-                "requestStart": {
-                    "type": "number"
-                },
-                "requestUrl": {
-                    "type": "string"
-                },
-                "res": {
-                    "type": "number"
-                },
-                "resourceType": {
-                    "type": "string"
-                },
-                "responseEnd": {
-                    "type": "number"
-                },
-                "responseStart": {
-                    "type": "number"
-                },
-                "responseStatus": {
-                    "type": "string"
-                },
-                "ssllink": {
-                    "type": "number"
-                },
-                "startTime": {
-                    "type": "number"
-                },
-                "trans": {
-                    "type": "number"
-                },
-                "transferSize": {
-                    "type": "integer"
-                },
-                "ttfb": {
-                    "type": "number"
-                },
-                "tti": {
-                    "description": "页面性能指标",
-                    "type": "number"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
         "model.Project": {
             "type": "object",
             "properties": {
@@ -1558,67 +1154,6 @@ const docTemplate = `{
                 }
             }
         },
-        "model.RequestEvent": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "duration": {
-                    "type": "number"
-                },
-                "event": {
-                    "$ref": "#/definitions/model.Event"
-                },
-                "eventId": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "requestMethod": {
-                    "type": "string"
-                },
-                "requestParams": {
-                    "type": "string"
-                },
-                "requestUrl": {
-                    "type": "string"
-                },
-                "responseData": {
-                    "type": "string"
-                },
-                "responseStatus": {
-                    "type": "integer"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.RouteEvent": {
-            "type": "object",
-            "properties": {
-                "action": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "event": {
-                    "$ref": "#/definitions/model.Event"
-                },
-                "eventId": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
         "model.User": {
             "type": "object",
             "properties": {
@@ -1639,6 +1174,80 @@ const docTemplate = `{
                 }
             }
         },
+        "service.BehaviorStatsResponse": {
+            "type": "object",
+            "properties": {
+                "clickStats": {
+                    "$ref": "#/definitions/service.ClickStatsData"
+                },
+                "pvStats": {
+                    "$ref": "#/definitions/service.PVStatsData"
+                },
+                "pvTrend": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/service.PVTrendItem"
+                    }
+                }
+            }
+        },
+        "service.ClickItem": {
+            "type": "object",
+            "properties": {
+                "elementPath": {
+                    "type": "string"
+                },
+                "elementType": {
+                    "type": "string"
+                },
+                "eventId": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "innerText": {
+                    "type": "string"
+                },
+                "pageUrl": {
+                    "type": "string"
+                },
+                "triggerTime": {
+                    "type": "integer"
+                }
+            }
+        },
+        "service.ClickListResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/service.ClickItem"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "service.ClickStatsData": {
+            "type": "object",
+            "properties": {
+                "clicksToday": {
+                    "type": "integer"
+                },
+                "topElements": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                },
+                "totalClicks": {
+                    "type": "integer"
+                }
+            }
+        },
         "service.CreateProjectRequest": {
             "type": "object",
             "required": [
@@ -1653,77 +1262,176 @@ const docTemplate = `{
                 }
             }
         },
-        "service.DistributionStatsResponse": {
+        "service.ErrorDetailResponse": {
             "type": "object",
             "properties": {
-                "labels": {
+                "events": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/definitions/service.ErrorEventItem"
                     }
                 },
-                "values": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "service.EventDetailResponse": {
-            "type": "object",
-            "properties": {
-                "click": {
-                    "$ref": "#/definitions/model.ClickEvent"
-                },
-                "errorEvent": {
-                    "$ref": "#/definitions/model.ErrorEvent"
-                },
-                "event": {
-                    "$ref": "#/definitions/model.Event"
-                },
-                "exposure": {
-                    "$ref": "#/definitions/model.ExposureEvent"
-                },
-                "performance": {
-                    "$ref": "#/definitions/model.PerformanceEvent"
-                },
-                "request": {
-                    "$ref": "#/definitions/model.RequestEvent"
-                },
-                "route": {
-                    "$ref": "#/definitions/model.RouteEvent"
-                }
-            }
-        },
-        "service.EventListResponse": {
-            "type": "object",
-            "properties": {
-                "list": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.Event"
-                    }
+                "group": {
+                    "$ref": "#/definitions/service.ErrorGroupItem"
                 },
                 "total": {
                     "type": "integer"
                 }
             }
         },
-        "service.EventStatsResponse": {
+        "service.ErrorEventItem": {
             "type": "object",
             "properties": {
-                "counts": {
+                "browser": {
+                    "type": "string"
+                },
+                "columnNumber": {
+                    "type": "integer"
+                },
+                "device": {
+                    "type": "string"
+                },
+                "errorMessage": {
+                    "type": "string"
+                },
+                "errorStack": {
+                    "type": "string"
+                },
+                "errorType": {
+                    "type": "string"
+                },
+                "eventId": {
+                    "type": "string"
+                },
+                "filePath": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "lineNumber": {
+                    "type": "integer"
+                },
+                "os": {
+                    "type": "string"
+                },
+                "pageUrl": {
+                    "type": "string"
+                },
+                "triggerTime": {
+                    "type": "integer"
+                }
+            }
+        },
+        "service.ErrorGroupItem": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "errorMessage": {
+                    "type": "string"
+                },
+                "errorType": {
+                    "type": "string"
+                },
+                "fingerprint": {
+                    "type": "string"
+                },
+                "firstSeen": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "lastSeen": {
+                    "type": "integer"
+                },
+                "severity": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "subType": {
+                    "type": "string"
+                }
+            }
+        },
+        "service.ErrorListResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
                     "type": "array",
                     "items": {
+                        "$ref": "#/definitions/service.ErrorGroupItem"
+                    }
+                },
+                "stats": {
+                    "$ref": "#/definitions/service.ErrorStatsData"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "service.ErrorStatsData": {
+            "type": "object",
+            "properties": {
+                "affectedUsers": {
+                    "type": "integer"
+                },
+                "browserDistribution": {
+                    "type": "object",
+                    "additionalProperties": {
                         "type": "integer"
                     }
                 },
-                "dates": {
+                "errorsToday": {
+                    "type": "integer"
+                },
+                "errorsYesterday": {
+                    "type": "integer"
+                },
+                "osDistribution": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                },
+                "totalErrors": {
+                    "type": "integer"
+                },
+                "typeDistribution": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "service.ErrorStatsResponse": {
+            "type": "object",
+            "properties": {
+                "stats": {
+                    "$ref": "#/definitions/service.ErrorStatsData"
+                },
+                "trend": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/definitions/service.ErrorTrendItem"
                     }
+                }
+            }
+        },
+        "service.ErrorTrendItem": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "date": {
+                    "type": "string"
                 }
             }
         },
@@ -1756,20 +1464,228 @@ const docTemplate = `{
                 }
             }
         },
+        "service.PVItem": {
+            "type": "object",
+            "properties": {
+                "browser": {
+                    "type": "string"
+                },
+                "device": {
+                    "type": "string"
+                },
+                "eventId": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isNewVisit": {
+                    "type": "boolean"
+                },
+                "os": {
+                    "type": "string"
+                },
+                "pageUrl": {
+                    "type": "string"
+                },
+                "referrer": {
+                    "type": "string"
+                },
+                "stayTime": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "triggerTime": {
+                    "type": "integer"
+                }
+            }
+        },
+        "service.PVListResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/service.PVItem"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "service.PVStatsData": {
+            "type": "object",
+            "properties": {
+                "avgStayTime": {
+                    "type": "integer"
+                },
+                "bounceRate": {
+                    "type": "number"
+                },
+                "pvToday": {
+                    "type": "integer"
+                },
+                "topPages": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                },
+                "totalPV": {
+                    "type": "integer"
+                },
+                "totalUV": {
+                    "type": "integer"
+                },
+                "uvToday": {
+                    "type": "integer"
+                }
+            }
+        },
+        "service.PVTrendItem": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "pv": {
+                    "type": "integer"
+                },
+                "uv": {
+                    "type": "integer"
+                }
+            }
+        },
+        "service.PerformanceListResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/service.PerformancePageItem"
+                    }
+                },
+                "stats": {
+                    "$ref": "#/definitions/service.PerformanceStatsData"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "service.PerformancePageItem": {
+            "type": "object",
+            "properties": {
+                "browser": {
+                    "type": "string"
+                },
+                "cls": {
+                    "type": "number"
+                },
+                "device": {
+                    "type": "string"
+                },
+                "domReady": {
+                    "type": "integer"
+                },
+                "eventId": {
+                    "type": "string"
+                },
+                "fcp": {
+                    "type": "integer"
+                },
+                "fid": {
+                    "type": "integer"
+                },
+                "fp": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "lcp": {
+                    "type": "integer"
+                },
+                "load": {
+                    "type": "integer"
+                },
+                "os": {
+                    "type": "string"
+                },
+                "pageUrl": {
+                    "type": "string"
+                },
+                "triggerTime": {
+                    "type": "integer"
+                },
+                "ttfb": {
+                    "type": "integer"
+                }
+            }
+        },
+        "service.PerformanceStatsData": {
+            "type": "object",
+            "properties": {
+                "avgCLS": {
+                    "type": "number"
+                },
+                "avgDomReady": {
+                    "type": "integer"
+                },
+                "avgFCP": {
+                    "type": "integer"
+                },
+                "avgFID": {
+                    "type": "integer"
+                },
+                "avgFP": {
+                    "type": "integer"
+                },
+                "avgLCP": {
+                    "type": "integer"
+                },
+                "avgLoad": {
+                    "type": "integer"
+                },
+                "avgTTFB": {
+                    "type": "integer"
+                }
+            }
+        },
         "service.PerformanceStatsResponse": {
             "type": "object",
             "properties": {
-                "labels": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                "stats": {
+                    "$ref": "#/definitions/service.PerformanceStatsData"
                 },
-                "values": {
+                "trend": {
                     "type": "array",
                     "items": {
-                        "type": "number"
+                        "$ref": "#/definitions/service.PerformanceTrendItem"
                     }
+                }
+            }
+        },
+        "service.PerformanceTrendItem": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "fcp": {
+                    "type": "integer"
+                },
+                "fp": {
+                    "type": "integer"
+                },
+                "lcp": {
+                    "type": "integer"
+                },
+                "ttfb": {
+                    "type": "integer"
                 }
             }
         },
@@ -1792,38 +1708,54 @@ const docTemplate = `{
                 }
             }
         },
-        "service.RequestErrorStatsResponse": {
+        "service.ResourcePerformanceItem": {
             "type": "object",
             "properties": {
-                "counts": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
+                "duration": {
+                    "type": "integer"
                 },
-                "statusCodes": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
+                "eventId": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "initiatorType": {
+                    "type": "string"
+                },
+                "pageUrl": {
+                    "type": "string"
+                },
+                "resourceType": {
+                    "type": "string"
+                },
+                "resourceUrl": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "integer"
+                },
+                "transferSize": {
+                    "type": "integer"
                 }
             }
         },
-        "service.TrackWebRequest": {
+        "service.ResourcePerformanceListResponse": {
             "type": "object",
             "properties": {
-                "baseInfo": {
-                    "type": "object",
-                    "additionalProperties": true
-                },
-                "eventInfo": {
+                "list": {
                     "type": "array",
                     "items": {
-                        "type": "object",
-                        "additionalProperties": true
+                        "$ref": "#/definitions/service.ResourcePerformanceItem"
                     }
+                },
+                "total": {
+                    "type": "integer"
                 }
             }
+        },
+        "service.TrackRequest": {
+            "type": "object"
         },
         "service.UpdateProjectRequest": {
             "type": "object",
@@ -1859,8 +1791,6 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "Web Tracing SDK 错误监控后台 API",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
-	LeftDelim:        "{{",
-	RightDelim:       "}}",
 }
 
 func init() {

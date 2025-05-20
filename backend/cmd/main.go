@@ -57,6 +57,9 @@ func registerRoutes(r *gin.Engine) {
 	// Swagger 文档
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	// 数据上报接口 - 不需要认证
+	r.POST("/api/trackweb", api.TrackWeb)
+
 	// 认证路由
 	r.POST("/api/auth/login", api.Login)
 	r.POST("/api/auth/register", api.Register)
@@ -71,5 +74,20 @@ func registerRoutes(r *gin.Engine) {
 		apiGroup.GET("/projects/:id", api.GetProject)
 		apiGroup.PUT("/projects/:id", api.UpdateProject)
 		apiGroup.DELETE("/projects/:id", api.DeleteProject)
+
+		// 错误监控路由
+		apiGroup.GET("/errors", api.GetErrors)
+		apiGroup.GET("/errors/:id", api.GetErrorDetail)
+		apiGroup.GET("/errors/stats", api.GetErrorStats)
+
+		// 性能监控路由
+		apiGroup.GET("/performance", api.GetPerformance)
+		apiGroup.GET("/performance/stats", api.GetPerformanceStats)
+		apiGroup.GET("/performance/resources", api.GetResourcePerformance)
+
+		// 用户行为路由
+		apiGroup.GET("/behavior/pv", api.GetPageViews)
+		apiGroup.GET("/behavior/clicks", api.GetClicks)
+		apiGroup.GET("/behavior/stats", api.GetBehaviorStats)
 	}
 }
